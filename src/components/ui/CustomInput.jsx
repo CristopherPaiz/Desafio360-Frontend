@@ -25,7 +25,7 @@ const CustomInput = ({
       placeholder={placeholder}
       helperText={helperText}
       variant={variant}
-      sx={sx}
+      sx={(sx, { my: 2.3 })}
       slotProps={{
         input: {
           startAdornment: startIcon && <InputAdornment position="start">{startIcon}</InputAdornment>,

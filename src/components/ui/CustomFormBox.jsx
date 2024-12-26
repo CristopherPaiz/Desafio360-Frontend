@@ -12,7 +12,6 @@ const FormBox = ({ children }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        p: 2,
       }}
     >
       <Container maxWidth="md">
