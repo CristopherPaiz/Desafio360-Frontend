@@ -78,7 +78,7 @@ const LoginPage = () => {
           helperText={errors.contrasenia?.message}
         />
 
-        <CustomButton loading={loading} type="submit" color="accent">
+        <CustomButton fullWidth loading={loading} type="submit" color="accent">
           Iniciar sesión
         </CustomButton>
       </Box>
