@@ -10,6 +10,7 @@ const CustomInput = ({
   error = false,
   helperText = "",
   placeholder = "",
+  defaultValue = "",
   sx = {},
   variant = "outlined",
   register = () => ({}),
@@ -22,6 +23,7 @@ const CustomInput = ({
       label={label}
       type={type}
       error={error}
+      defaultValue={defaultValue}
       placeholder={placeholder}
       helperText={helperText}
       variant={variant}
@@ -50,6 +52,7 @@ CustomInput.propTypes = {
   sx: PropTypes.object,
   variant: PropTypes.string,
   register: PropTypes.object,
+  defaultValue: PropTypes.string,
 };
 
 export default CustomInput;
