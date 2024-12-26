@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Email, Lock } from "@mui/icons-material";
 import { loginSchema } from "../Validations/validationsSchema";
@@ -8,9 +6,15 @@ import CustomTypography from "../components/ui/CustomTypography";
 import CustomInput from "../components/ui/CustomInput";
 import CustomButton from "../components/ui/CustomButton";
 import { Box } from "@mui/material";
+import { URL_BASE } from "../config/config";
+// HOOKS
+import { useForm } from "react-hook-form";
+import useFetch from "../hooks/useFetch";
+import { useNotification } from "../hooks/useNotification";
 
 const LoginPage = () => {
-  const [loading, setLoading] = useState(false);
+  const { loading, request } = useFetch();
+  const { showNotification } = useNotification();
 
   const {
     register,
@@ -21,27 +25,15 @@ const LoginPage = () => {
   });
 
   const onSubmit = async (data) => {
-    setLoading(true);
-    try {
-      const response = await fetch("localhost:3000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer your-token-here",
-        },
-        body: JSON.stringify(data),
+    const result = await request(`${URL_BASE}/auth/login`, "POST", data);
+
+    if (result.error) {
+      showNotification({
+        message: result?.error,
+        severity: "error",
       });
-
-      if (!response.ok) {
-        throw new Error("Error en el login");
-      }
-
-      const result = await response.json();
-      console.log(result);
-    } catch (error) {
-      console.error("Error:", error);
-    } finally {
-      setLoading(false);
+    } else {
+      console.log("Resultado", result.data);
     }
   };
 
@@ -64,6 +56,7 @@ const LoginPage = () => {
           placeholder="Ingrese su correo electrónico"
           startIcon={<Email />}
           register={register("usuario")}
+          defaultValue="cris@cris.com"
           error={!!errors.usuario}
           helperText={errors.usuario?.message}
         />
@@ -72,6 +65,7 @@ const LoginPage = () => {
           label="Contraseña"
           type="password"
           placeholder="********"
+          defaultValue="asdhakjsdh"
           startIcon={<Lock />}
           register={register("contrasenia")}
           error={!!errors.contrasenia}
