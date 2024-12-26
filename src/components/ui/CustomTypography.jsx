@@ -8,6 +8,7 @@ const CustomTypography = ({ variant, children, align = "center", sx = {}, ...pro
       sx={{
         fontWeight: "bold",
         textAlign: align,
+        m: 2,
         ...sx,
       }}
       {...props}
