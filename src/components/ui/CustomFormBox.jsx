@@ -8,7 +8,7 @@ const FormBox = ({ children }) => {
   return (
     <Box
       sx={{
-        minHeight: "95vh",
+        minHeight: "100vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
