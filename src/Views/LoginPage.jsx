@@ -1,20 +1,25 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Email, Lock } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { Box } from "@mui/material";
+import { URL_BASE } from "../config/config";
+
 import { loginSchema } from "../Validations/validationsSchema";
 import CustomFormBox from "../components/ui/CustomFormBox";
 import CustomTypography from "../components/ui/CustomTypography";
 import CustomInput from "../components/ui/CustomInput";
 import CustomButton from "../components/ui/CustomButton";
-import { Box } from "@mui/material";
-import { URL_BASE } from "../config/config";
 // HOOKS
 import { useForm } from "react-hook-form";
 import useFetch from "../hooks/useFetch";
 import { useNotification } from "../hooks/useNotification";
+import { useAuth } from "../context/AuthContext";
 
 const LoginPage = () => {
   const { loading, request } = useFetch();
   const { showNotification } = useNotification();
+  const { setIsAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -35,6 +40,9 @@ const LoginPage = () => {
     } else {
       console.log("Resultado", result.data);
     }
+    //simular login
+    setIsAuthenticated(true);
+    navigate("/");
   };
 
   return (
