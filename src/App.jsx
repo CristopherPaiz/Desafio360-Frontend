@@ -3,6 +3,7 @@ import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./layouts/ProtectedRoute";
 
 import LoginPage from "./Views/LoginPage";
+import Page404 from "./Views/Page404";
 
 const Home = () => <h1>Página de Inicio</h1>;
 const Dashboard = () => <h1>Dashboard</h1>;
@@ -29,6 +30,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route path="*" element={<Page404 />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
