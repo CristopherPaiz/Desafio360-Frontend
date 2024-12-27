@@ -1,36 +1,26 @@
-import { Box, Typography, Button, useTheme } from "@mui/material";
+import { Typography, Button, Container } from "@mui/material";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { Link } from "react-router-dom";
 
 const Page404 = () => {
-  const theme = useTheme();
-
   return (
-    <Box
+    <Container
+      maxWidth="sm"
       sx={{
-        height: "100vh",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
         alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
         textAlign: "center",
-        backgroundColor: theme.palette.background.default,
-        color: theme.palette.text.primary,
-        margin: 0,
-        padding: 0,
       }}
     >
-      <ErrorOutlineIcon
-        sx={{
-          fontSize: "6rem",
-          color: theme.palette.error.main,
-        }}
-      />
-      <Typography variant="h3" component="h1" sx={{ marginTop: 2, fontWeight: "bold" }}>
-        404
+      <ErrorOutlineIcon sx={{ fontSize: 80, color: "error.main", mb: 2 }} />
+      <Typography variant="h4" gutterBottom>
+        ¡Oops! Página no encontrada
       </Typography>
-      <Typography variant="h6" sx={{ marginTop: 1, marginBottom: 3, maxWidth: "500px" }}>
-        Oops! Parece que la página que buscas no existe o ha sido movida.
+      <Typography variant="body1" sx={{ mb: 4, color: "text.secondary" }}>
+        La página que buscas no existe o ha sido movida. Verifica la URL o regresa al inicio.
       </Typography>
       <Button
         variant="contained"
@@ -45,7 +35,7 @@ const Page404 = () => {
       >
         Regresar al inicio
       </Button>
-    </Box>
+    </Container>
   );
 };
 
