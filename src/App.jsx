@@ -6,7 +6,9 @@ import LoginPage from "./Views/LoginPage";
 import Page404 from "./Views/Page404";
 
 const Home = () => <h1>Página de Inicio</h1>;
-const Dashboard = () => <h1>Dashboard</h1>;
+const Ordenes = () => <h1>Ordenes</h1>;
+const Admin = () => <h1>Administración</h1>;
+const Carrito = () => <h1>Carrito</h1>;
 
 const App = () => {
   return (
@@ -23,10 +25,26 @@ const App = () => {
             }
           />
           <Route
-            path="/dashboard"
+            path="/ordenes"
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <Ordenes />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <Admin />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/carrito"
+            element={
+              <ProtectedRoute>
+                <Carrito />
               </ProtectedRoute>
             }
           />
