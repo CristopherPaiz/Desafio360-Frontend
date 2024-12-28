@@ -113,7 +113,7 @@ const ProductPage = () => {
         <Box sx={{ flex: "1 1 60%", padding: 0 }}>
           <Card>
             <CardContent sx={{ px: 4, pt: 4 }}>
-              <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
+              <Typography variant="h4" fontWeight="bold" sx={{ mb: 2 }}>
                 {product.nombre}
               </Typography>
               <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 2 }}>
@@ -124,11 +124,11 @@ const ProductPage = () => {
                 <Category sx={{ fontSize: 18, mr: 1 }} />
                 Categoría: {product.categoria}
               </Typography>
-              <Typography variant="h6" color="success.main" sx={{ mb: 2 }}>
-                <LocalOffer sx={{ fontSize: 18, mr: 1 }} />
+              <Typography variant="h5" color="success.main" fontWeight={"bold"} sx={{ mb: 2 }}>
+                <LocalOffer sx={{ fontSize: 24, mr: 2 }} />
                 Precio: Q{product.precio.toFixed(2)}
               </Typography>
-              <Typography variant="body2" color={product.stock > 0 ? "text.primary" : "error.main"} sx={{ mb: 2 }}>
+              <Typography variant="body1" color={product.stock > 0 ? "text.primary" : "error.main"} sx={{ mb: 2 }}>
                 <Inventory sx={{ fontSize: 18, mr: 1 }} />
                 {product.stock > 0 ? `Stock: ${product.stock} disponibles` : "Sin stock"}
               </Typography>
