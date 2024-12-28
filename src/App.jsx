@@ -1,12 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
-import ProtectedRoute from "./layouts/ProtectedRoute";
-
-import LoginPage from "./Views/LoginPage";
-import Page404 from "./Views/Page404";
 import { CartProvider } from "./context/CartContext";
 
-const Home = () => <h1>Página de Inicio</h1>;
+import ProtectedRoute from "./layouts/ProtectedRoute";
+import LoginPage from "./Views/LoginPage";
+import Page404 from "./Views/Page404";
+import HomePage from "./Views/HomePage";
+
 const Ordenes = () => <h1>Ordenes</h1>;
 const Admin = () => <h1>Administración</h1>;
 const Carrito = () => <h1>Carrito</h1>;
@@ -22,7 +22,7 @@ const App = () => {
               path="/"
               element={
                 <ProtectedRoute>
-                  <Home />
+                  <HomePage />
                 </ProtectedRoute>
               }
             />
