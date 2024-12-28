@@ -30,6 +30,7 @@ const LoginPage = () => {
   });
 
   const onSubmit = async (data) => {
+    console.log("Data", data);
     const result = await request(`${URL_BASE}/auth/login`, "POST", data);
 
     if (result.error) {
@@ -63,17 +64,17 @@ const LoginPage = () => {
           type="email"
           placeholder="Ingrese su correo electrónico"
           startIcon={<Email />}
-          register={register("usuario")}
-          defaultValue="cris@cris.com"
-          error={!!errors.usuario}
-          helperText={errors.usuario?.message}
+          register={register("correo")}
+          defaultValue="admin1@admin1.com"
+          error={!!errors.correo}
+          helperText={errors.correo?.message}
         />
 
         <CustomInput
           label="Contraseña"
           type="password"
           placeholder="********"
-          defaultValue="asdhakjsdh"
+          defaultValue="admin123"
           startIcon={<Lock />}
           register={register("contrasenia")}
           error={!!errors.contrasenia}
