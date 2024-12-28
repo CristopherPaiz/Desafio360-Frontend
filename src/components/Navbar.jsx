@@ -33,7 +33,7 @@ const Navbar = ({ cartItemsCount = 0, handleLogout }) => {
   ];
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Toolbar>
         <Box
           sx={{
