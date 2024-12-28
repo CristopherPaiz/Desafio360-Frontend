@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Container, Card, CardMedia, CardContent, Typography, Button, Backdrop, CircularProgress, Box, Breadcrumbs, Link } from "@mui/material";
-import { LocalOffer, Category, Inventory, LocalMall, Store } from "@mui/icons-material";
+import { LocalOffer, Category, Inventory, ShoppingCart, Store } from "@mui/icons-material";
 import { Link as RouterLink } from "react-router-dom"; // Usamos Link de React Router
 import useFetch from "../hooks/useFetch";
 import { URL_BASE } from "../config/config";
@@ -135,7 +135,7 @@ const ProductPage = () => {
             </CardContent>
             <Box sx={{ px: 2, pb: 4, display: "flex", justifyContent: "center" }}>
               <Button variant="contained" color="primary" size="large" disabled={product.stock === 0}>
-                <LocalMall sx={{ mr: 1 }} />
+                <ShoppingCart sx={{ mr: 1 }} />
                 Añadir al carrito
               </Button>
             </Box>
