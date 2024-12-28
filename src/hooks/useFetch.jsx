@@ -16,7 +16,8 @@ const useFetch = () => {
         method,
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer TOKEN AQUI PERRO",
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2wiOiJBZG1pbmlzdHJhZG9yIiwiaWF0IjoxNzM1NDAxMTAyLCJleHAiOjE3MzU0ODc1MDJ9.OOtYPGY5Yu2RiH75W3GsK9MDRRVNNPLL8LDwZPdj6Y4",
         },
         body: body ? JSON.stringify(body) : null,
         signal: controller.signal,

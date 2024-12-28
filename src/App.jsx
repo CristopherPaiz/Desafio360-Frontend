@@ -6,6 +6,7 @@ import ProtectedRoute from "./layouts/ProtectedRoute";
 import LoginPage from "./Views/LoginPage";
 import Page404 from "./Views/Page404";
 import HomePage from "./Views/HomePage";
+import ProductPage from "./Views/ProductPage";
 
 const Ordenes = () => <h1>Ordenes</h1>;
 const Admin = () => <h1>Administración</h1>;
@@ -23,6 +24,14 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <HomePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/productos/:id"
+              element={
+                <ProtectedRoute>
+                  <ProductPage />
                 </ProtectedRoute>
               }
             />

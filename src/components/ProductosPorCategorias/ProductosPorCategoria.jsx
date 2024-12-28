@@ -42,11 +42,7 @@ const ProductosPorCategoria = () => {
       for (const categoria of categorias) {
         if (categoriasValidas.length >= CATEGORIAS_POR_MOSTRAR) break;
 
-        const response = await request(
-          `${URL_BASE}/productos/filtro-paginado?page=1&size=${PRODUCTOS_POR_FILA}&categoria_nombre=${categoria.nombre}`,
-          "GET",
-          null
-        );
+        const response = await request(`${URL_BASE}/productos/filtro-paginado?page=1&size=${PRODUCTOS_POR_FILA}&categoria_nombre=${categoria.nombre}`, "GET", null);
 
         if (!response.error) {
           const productosActivos = response.data.productos.filter((producto) => producto.estado === "Activo");
