@@ -18,7 +18,7 @@ import { useAuth } from "../context/AuthContext";
 const LoginPage = () => {
   const { loading, request } = useFetch();
   const { showNotification } = useNotification();
-  const { setIsAuthenticated } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const {
@@ -30,20 +30,16 @@ const LoginPage = () => {
   });
 
   const onSubmit = async (data) => {
-    console.log("Data", data);
     const result = await request(`${URL_BASE}/auth/login`, "POST", data);
-
     if (result.error) {
       showNotification({
         message: result?.error,
         severity: "error",
       });
     } else {
-      console.log("Resultado", result.data);
+      login(result.data.mensaje); // Guardamos el token JWT
+      navigate("/");
     }
-    //simular login
-    setIsAuthenticated(true);
-    navigate("/");
   };
 
   return (

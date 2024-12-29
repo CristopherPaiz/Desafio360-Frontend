@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
@@ -16,52 +16,63 @@ const ProductosPorCategoria = () => {
   const { showNotification } = useNotification();
   const { loading, request } = useFetch();
   const [categoriasConProductos, setCategoriasConProductos] = useState([]);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-  useEffect(() => {
-    const fetchCategorias = async () => {
-      const response = await request(`${URL_BASE}/categorias/activas`, "GET", null);
-      if (response.error) {
-        showNotification({
-          message: response?.error,
-          severity: "error",
-        });
-      } else {
-        const categoriasAleatorias = [...response.data].sort(() => Math.random() - 0.5);
-        setCategorias(categoriasAleatorias);
-      }
-    };
+  const fetchCategorias = useCallback(async () => {
+    if (!isInitialLoad) return; // Solo ejecutar en la carga inicial
 
-    fetchCategorias();
-  }, [showNotification, request]);
+    const response = await request(`${URL_BASE}/categorias/activas`, "GET", null);
+    if (response.error) {
+      showNotification({
+        message: response?.error,
+        severity: "error",
+      });
+    } else {
+      // Ordenamos una sola vez y mantenemos ese orden
+      const categoriasAleatorias = [...response.data].sort(() => Math.random() - 0.5);
+      setCategorias(categoriasAleatorias);
+      setIsInitialLoad(false);
+    }
+  }, [request, showNotification, isInitialLoad]);
 
-  useEffect(() => {
-    const fetchProductosPorCategoria = async () => {
-      const productosTemp = {};
-      const categoriasValidas = [];
+  const fetchProductosPorCategoria = useCallback(async () => {
+    if (!categorias.length) return;
 
-      for (const categoria of categorias) {
-        if (categoriasValidas.length >= CATEGORIAS_POR_MOSTRAR) break;
+    const productosTemp = {};
+    const categoriasValidas = [];
 
-        const response = await request(`${URL_BASE}/productos/filtro-paginado?page=1&size=${PRODUCTOS_POR_FILA}&categoria_nombre=${categoria.nombre}`, "GET", null);
+    for (const categoria of categorias) {
+      if (categoriasValidas.length >= CATEGORIAS_POR_MOSTRAR) break;
 
-        if (!response.error) {
-          const productosActivos = response.data.productos.filter((producto) => producto.estado === "Activo");
+      const response = await request(
+        `${URL_BASE}/productos/filtro-paginado?page=1&size=${PRODUCTOS_POR_FILA}&categoria_nombre=${categoria.nombre}`,
+        "GET",
+        null
+      );
 
-          if (productosActivos.length > 0) {
-            productosTemp[categoria.nombre] = productosActivos;
-            categoriasValidas.push(categoria);
-          }
+      if (!response.error) {
+        const productosActivos = response.data.productos.filter((producto) => producto.estado === "Activo");
+
+        if (productosActivos.length > 0) {
+          productosTemp[categoria.nombre] = productosActivos;
+          categoriasValidas.push(categoria);
         }
       }
+    }
 
-      setProductosPorCategoria(productosTemp);
-      setCategoriasConProductos(categoriasValidas);
-    };
+    setProductosPorCategoria(productosTemp);
+    setCategoriasConProductos(categoriasValidas);
+  }, [categorias, request]);
 
-    if (categorias.length > 0) {
+  useEffect(() => {
+    fetchCategorias();
+  }, [fetchCategorias]);
+
+  useEffect(() => {
+    if (!isInitialLoad && categorias.length > 0) {
       fetchProductosPorCategoria();
     }
-  }, [categorias, request]);
+  }, [categorias, fetchProductosPorCategoria, isInitialLoad]);
 
   return (
     <Box>
@@ -89,32 +100,28 @@ const ProductosPorCategoria = () => {
               </Button>
             </Box>
 
-            {loading ? (
-              <ProductosPorCategoriaSkeleton cantidadCategorias={1} />
-            ) : (
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: 2,
-                  flexWrap: "wrap",
-                }}
-              >
-                {productosPorCategoria[categoria.nombre]?.map((producto) => (
-                  <Box
-                    key={producto.idProductos}
-                    sx={{
-                      flex: {
-                        xs: "0 0 100%",
-                        sm: "0 0 calc(50% - 8px)",
-                        md: `0 0 calc(${100 / PRODUCTOS_POR_FILA}% - 12px)`,
-                      },
-                    }}
-                  >
-                    <CardProducto producto={producto} />
-                  </Box>
-                ))}
-              </Box>
-            )}
+            <Box
+              sx={{
+                display: "flex",
+                gap: 2,
+                flexWrap: "wrap",
+              }}
+            >
+              {productosPorCategoria[categoria.nombre]?.map((producto) => (
+                <Box
+                  key={producto.idProductos}
+                  sx={{
+                    flex: {
+                      xs: "0 0 100%",
+                      sm: "0 0 calc(50% - 8px)",
+                      md: `0 0 calc(${100 / PRODUCTOS_POR_FILA}% - 12px)`,
+                    },
+                  }}
+                >
+                  <CardProducto producto={producto} />
+                </Box>
+              ))}
+            </Box>
           </Box>
         ))
       )}

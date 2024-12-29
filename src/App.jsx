@@ -14,9 +14,9 @@ const Carrito = () => <h1>Carrito</h1>;
 
 const App = () => {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
+        <CartProvider>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route
@@ -61,9 +61,9 @@ const App = () => {
             />
             <Route path="*" element={<Page404 />} />
           </Routes>
-        </BrowserRouter>
-      </CartProvider>
-    </AuthProvider>
+        </CartProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 };
 
