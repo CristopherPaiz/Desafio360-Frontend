@@ -49,7 +49,6 @@ export const AuthProvider = ({ children }) => {
 
   const handleLogin = (token) => {
     try {
-      console.log("Token recibido: ", token);
       const decodedToken = jwtDecode(token);
       localStorage.setItem(TOKEN_KEY, token);
       setIsAuthenticated(true);

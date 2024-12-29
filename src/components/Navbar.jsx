@@ -5,32 +5,57 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import useIsSmallScreen from "../hooks/useIsSmallScreen";
 
-const Navbar = ({ cartItemsCount = 0, handleLogout }) => {
+const Navbar = ({ cartItemsCount = 0, handleLogout, userType }) => {
   const navigate = useNavigate();
   const isSmallScreen = useIsSmallScreen();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+  const handleMenuClick = (event) => setAnchorEl(event.currentTarget);
+  const handleClose = () => setAnchorEl(null);
   const handleNavigation = (path) => {
     navigate(path);
     handleClose();
   };
 
-  const menuItems = [
-    { icon: <Home />, text: "Inicio", path: "/" },
-    { icon: <Receipt />, text: "Órdenes", path: "/ordenes" },
-    { icon: <Settings />, text: "Administración", path: "/admin" },
-    { icon: <ShoppingCart />, text: "Carrito", path: "/carrito" },
-    { icon: <Logout />, text: "Cerrar Sesión", onClick: handleLogout },
-  ];
+  const menuConfig = {
+    Cliente: [
+      { icon: <Home />, text: "Inicio", path: "/" },
+      { icon: <Receipt />, text: "Mis Órdenes", path: "/mis-ordenes" },
+      { icon: <ShoppingCart />, text: "Carrito", path: "/carrito" },
+      { icon: <Logout />, text: "Cerrar Sesión", onClick: handleLogout },
+    ],
+    Administrador: [
+      { icon: <Home />, text: "Inicio", path: "/" },
+      { icon: <Receipt />, text: "Órdenes", path: "/ordenes" },
+      { icon: <Settings />, text: "Administración", path: "/admin" },
+      { icon: <Logout />, text: "Cerrar Sesión", onClick: handleLogout },
+    ],
+    Operador: [
+      { icon: <Home />, text: "Inicio", path: "/" },
+      { icon: <Receipt />, text: "Órdenes", path: "/ordenes" },
+      { icon: <Settings />, text: "Administración", path: "/admin" },
+      { icon: <Logout />, text: "Cerrar Sesión", onClick: handleLogout },
+    ],
+  };
+
+  const menuItems = menuConfig[userType] || [];
+
+  const renderMenuItems = (items) =>
+    items.map((item, index) => (
+      <MenuItem key={index} onClick={() => (item.onClick ? item.onClick() : handleNavigation(item.path))}>
+        <ListItemIcon>
+          {item.text === "Carrito" ? (
+            <Badge badgeContent={cartItemsCount} color="error">
+              {item.icon}
+            </Badge>
+          ) : (
+            item.icon
+          )}
+        </ListItemIcon>
+        <ListItemText>{item.text}</ListItemText>
+      </MenuItem>
+    ));
 
   return (
     <AppBar position="sticky">
@@ -40,21 +65,11 @@ const Navbar = ({ cartItemsCount = 0, handleLogout }) => {
             flexGrow: 0,
             mr: 2,
             cursor: "pointer",
-            "&:hover": {
-              opacity: 0.8,
-            },
+            "&:hover": { opacity: 0.8 },
           }}
           onClick={() => navigate("/")}
         >
-          <Box
-            component="img"
-            src="/LogoMedium.webp"
-            alt="Logo"
-            sx={{
-              height: isSmallScreen ? "30px" : "40px",
-              display: "block",
-            }}
-          />
+          <Box component="img" src="/LogoMedium.webp" alt="Logo" sx={{ height: isSmallScreen ? "30px" : "40px", display: "block" }} />
         </Box>
 
         <Box
@@ -87,42 +102,25 @@ const Navbar = ({ cartItemsCount = 0, handleLogout }) => {
             <IconButton color="inherit" onClick={handleMenuClick} edge="end">
               <MenuIcon />
             </IconButton>
-            <Menu anchorEl={anchorEl} open={open} onClose={handleClose} onClick={handleClose}>
-              {menuItems.map((item, index) => (
-                <MenuItem key={index} onClick={() => (item.onClick ? item.onClick() : handleNavigation(item.path))}>
-                  <ListItemIcon>
-                    {item.text === "Carrito" ? (
-                      <Badge badgeContent={cartItemsCount} color="error">
-                        {item.icon}
-                      </Badge>
-                    ) : (
-                      item.icon
-                    )}
-                  </ListItemIcon>
-                  <ListItemText>{item.text}</ListItemText>
-                </MenuItem>
-              ))}
+            <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+              {renderMenuItems(menuItems)}
             </Menu>
           </>
         ) : (
           <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
-            <Button color="inherit" startIcon={<Home />} onClick={() => navigate("/")}>
-              Inicio
-            </Button>
-            <Button color="inherit" startIcon={<Receipt />} onClick={() => navigate("/ordenes")}>
-              Órdenes
-            </Button>
-            <Button color="inherit" startIcon={<Settings />} onClick={() => navigate("/admin")}>
-              Administración
-            </Button>
-            <IconButton color="inherit" onClick={() => navigate("/carrito")}>
-              <Badge badgeContent={cartItemsCount} color="error">
-                <ShoppingCart />
-              </Badge>
-            </IconButton>
-            <IconButton color="inherit" onClick={handleLogout}>
-              <Logout />
-            </IconButton>
+            {menuItems.map((item, index) =>
+              item.text === "Carrito" ? (
+                <IconButton key={index} color="inherit" onClick={() => navigate(item.path)}>
+                  <Badge badgeContent={cartItemsCount} color="error">
+                    {item.icon}
+                  </Badge>
+                </IconButton>
+              ) : (
+                <Button key={index} color="inherit" startIcon={item.icon} onClick={() => (item.onClick ? item.onClick() : navigate(item.path))}>
+                  {item.text}
+                </Button>
+              )
+            )}
           </Box>
         )}
       </Toolbar>
@@ -133,6 +131,7 @@ const Navbar = ({ cartItemsCount = 0, handleLogout }) => {
 Navbar.propTypes = {
   cartItemsCount: PropTypes.number,
   handleLogout: PropTypes.func.isRequired,
+  userType: PropTypes.string.isRequired,
 };
 
 export default Navbar;
