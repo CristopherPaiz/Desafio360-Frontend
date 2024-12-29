@@ -7,10 +7,10 @@ import LoginPage from "./Views/LoginPage";
 import Page404 from "./Views/Page404";
 import HomePage from "./Views/HomePage";
 import ProductPage from "./Views/ProductPage";
+import CartPage from "./Views/CartPage";
 
 const Ordenes = () => <h1>Ordenes</h1>;
 const Admin = () => <h1>Administración</h1>;
-const Carrito = () => <h1>Carrito</h1>;
 
 const App = () => {
   return (
@@ -55,7 +55,7 @@ const App = () => {
               path="/carrito"
               element={
                 <ProtectedRoute>
-                  <Carrito />
+                  <CartPage />
                 </ProtectedRoute>
               }
             />
