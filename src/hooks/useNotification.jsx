@@ -39,7 +39,9 @@ export const NotificationProvider = ({ children }) => {
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
           autoHideDuration={activeNotification.autoHideDuration}
           onClose={hideNotification}
-          onExited={hideNotification} // Para manejar transiciones de salida
+          TransitionProps={{
+            onExited: hideNotification, // Aquí se asigna correctamente
+          }}
           sx={{
             zIndex: 1500,
           }}

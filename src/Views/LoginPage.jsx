@@ -18,7 +18,7 @@ import { useAuth } from "../context/AuthContext";
 const LoginPage = () => {
   const { loading, request } = useFetch();
   const { showNotification } = useNotification();
-  const { login } = useAuth();
+  const { login, setUserData } = useAuth();
   const navigate = useNavigate();
 
   const {
@@ -37,6 +37,7 @@ const LoginPage = () => {
         severity: "error",
       });
     } else {
+      setUserData(result.data.data); // Guardamos los datos del usuario
       login(result.data.mensaje); // Guardamos el token JWT
       navigate("/");
     }

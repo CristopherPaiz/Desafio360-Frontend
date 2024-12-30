@@ -1,13 +1,27 @@
 import { Box, Typography, TextField, Button } from "@mui/material";
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useAuth } from "../../context/AuthContext";
+import { CartStepTwoSchema } from "../../Validations/validationsSchema";
 import PropTypes from "prop-types";
 
 const CartStepTwo = ({ onNext, onBack }) => {
+  const { userData } = useAuth();
+  console.log(userData);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(CartStepTwoSchema),
+    defaultValues: {
+      nombre_completo: userData.nombre_completo,
+      correo_electronico: userData.correo_electronico,
+      telefono: userData.telefono,
+      cliente: userData.cliente,
+    },
+  });
 
   const onSubmit = (data) => {
     console.log(data);
@@ -25,41 +39,35 @@ const CartStepTwo = ({ onNext, onBack }) => {
           <TextField
             label="Nombre completo"
             fullWidth
-            {...register("fullName", { required: "Este campo es requerido" })}
-            error={!!errors.fullName}
-            helperText={errors.fullName?.message}
+            {...register("nombre_completo")}
+            error={!!errors.nombre_completo}
+            helperText={errors.nombre_completo?.message}
+            InputProps={{
+              readOnly: true,
+            }}
           />
 
           <TextField
             label="Correo electrónico"
             fullWidth
             type="email"
-            {...register("email", {
-              required: "Este campo es requerido",
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "Correo electrónico inválido",
-              },
-            })}
-            error={!!errors.email}
-            helperText={errors.email?.message}
+            {...register("correo_electronico")}
+            error={!!errors.correo_electronico}
+            helperText={errors.correo_electronico?.message}
           />
+
+          <TextField label="Teléfono" fullWidth {...register("telefono")} error={!!errors.telefono} helperText={errors.telefono?.message} />
 
           <TextField
-            label="Teléfono"
+            label="Cliente"
             fullWidth
-            {...register("phone", {
-              required: "Este campo es requerido",
-              pattern: {
-                value: /^[0-9]{8}$/,
-                message: "Número de teléfono inválido",
-              },
-            })}
-            error={!!errors.phone}
-            helperText={errors.phone?.message}
+            {...register("cliente")}
+            error={!!errors.cliente}
+            helperText={errors.cliente?.message}
+            InputProps={{
+              readOnly: true,
+            }}
           />
-
-          <TextField label="NIT" fullWidth {...register("nit")} />
 
           <Box sx={{ display: "flex", gap: 2, justifyContent: "flex-end", mt: 2 }}>
             <Button onClick={onBack}>Regresar</Button>
