@@ -1,4 +1,5 @@
 import { Box, Typography, Button } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import CartItem from "./CartItem";
 import PropTypes from "prop-types";
@@ -17,7 +18,7 @@ const CartStepOne = ({ onNext }) => {
         <Typography variant="h6" gutterBottom>
           Tu carrito está vacío
         </Typography>
-        <Button variant="contained" color="primary" href="/productos">
+        <Button variant="contained" component={RouterLink} color="primary" to="/">
           Ir a comprar
         </Button>
       </Box>

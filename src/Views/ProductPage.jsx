@@ -1,27 +1,28 @@
 import { useEffect, useState } from "react";
-import { Container, Card, CardMedia, CardContent, Typography, Button, Backdrop, CircularProgress, Box, Breadcrumbs, Link } from "@mui/material";
+import { Container, Card, CardMedia, CardContent, Typography, Button, Backdrop, CircularProgress, Box, Breadcrumbs } from "@mui/material";
 import { LocalOffer, Category, Inventory, ShoppingCart, Store } from "@mui/icons-material";
-import { Link as RouterLink } from "react-router-dom"; // Usamos Link de React Router
+import { Link as RouterLink } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import { URL_BASE } from "../config/config";
 import { useNotification } from "../hooks/useNotification";
 import { useCart } from "../context/CartContext";
+import useIsSmallScreen from "../hooks/useIsSmallScreen";
 
 const ProductPage = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [attempts, setAttempts] = useState(0); // Controla el número de intentos
+  const [attempts, setAttempts] = useState(0);
   const { request } = useFetch();
   const { showNotification } = useNotification();
   const { addToCart } = useCart();
+  const isSmallScreen = useIsSmallScreen();
 
   useEffect(() => {
     const fetchProduct = async () => {
       setLoading(true);
 
-      // Obtiene el ID del producto desde la URL
       const pathname = window.location.pathname;
-      const productId = pathname.split("/").pop(); // Extrae la última parte de la URL
+      const productId = pathname.split("/").pop();
 
       if (!productId) {
         showNotification({
@@ -40,7 +41,6 @@ const ProductPage = () => {
           severity: "error",
         });
 
-        // Incrementa el número de intentos si falla y detén tras dos intentos
         setAttempts((prev) => {
           if (prev < 1) {
             return prev + 1;
@@ -81,37 +81,42 @@ const ProductPage = () => {
   return (
     <Container sx={{ mt: 4 }}>
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 3 }}>
-        <RouterLink to="/" style={{ textDecoration: "none" }}>
-          <Link underline="hover" color="inherit" sx={{ cursor: "pointer", color: "text.primary" }}>
-            Inicio
-          </Link>
+        <RouterLink to="/" style={{ textDecoration: "none", color: "inherit" }}>
+          Inicio
         </RouterLink>
-        <RouterLink to="/productos" style={{ textDecoration: "none" }}>
-          <Link underline="hover" color="inherit" sx={{ cursor: "pointer", color: "text.primary" }}>
-            Productos
-          </Link>
+        <RouterLink to="/productos" style={{ textDecoration: "none", color: "inherit" }}>
+          Productos
         </RouterLink>
-        <RouterLink to={`/categorias`} style={{ textDecoration: "none" }}>
-          <Link underline="hover" color="inherit" sx={{ cursor: "pointer", color: "text.primary" }}>
-            {product.categoria}
-          </Link>
+        <RouterLink to={`/categorias`} style={{ textDecoration: "none", color: "inherit" }}>
+          {product.categoria}
         </RouterLink>
         <Typography sx={{ color: "text.primary" }}>{product.nombre}</Typography>
       </Breadcrumbs>
 
-      <Box sx={{ display: "flex", flexDirection: "row", gap: 4 }}>
-        <Box sx={{ flex: "1 1 40%", padding: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: isSmallScreen ? "column" : "row",
+          gap: 4,
+        }}
+      >
+        <Box sx={{ flex: isSmallScreen ? "1 1 auto" : "1 1 40%", padding: 2 }}>
           <Card>
             <CardMedia
               component="img"
               image={product.foto}
               alt={product.nombre}
-              sx={{ height: 300, objectFit: "contain", width: "100%", margin: "0 auto", padding: 4 }}
+              sx={{
+                height: 300,
+                objectFit: "contain",
+                width: "100%",
+                margin: "0 auto",
+                padding: 4,
+              }}
             />
           </Card>
         </Box>
 
-        {/* Información del producto */}
         <Box sx={{ flex: "1 1 60%", padding: 0 }}>
           <Card>
             <CardContent sx={{ px: 4, pt: 4 }}>

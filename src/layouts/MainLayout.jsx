@@ -6,9 +6,10 @@ import { useCart } from "../context/CartContext";
 
 const MainLayout = ({ children }) => {
   const { logout, userType } = useAuth();
-  const { countItemsInCart } = useCart();
+  const { countItemsInCart, clearCart } = useCart();
 
   const handleLogout = () => {
+    clearCart(); // Limpiamos el carrito al cerrar sesión
     logout(); // Usamos la función logout del contexto que ya maneja todo
   };
 
