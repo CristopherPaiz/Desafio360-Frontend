@@ -68,6 +68,7 @@ export const AuthProvider = ({ children }) => {
 
   const handleLogout = () => {
     localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem("cart");
     setIsAuthenticated(false);
     setUserType(null);
     navigate("/login");

@@ -5,6 +5,7 @@ import { Link as RouterLink } from "react-router-dom"; // Usamos Link de React R
 import useFetch from "../hooks/useFetch";
 import { URL_BASE } from "../config/config";
 import { useNotification } from "../hooks/useNotification";
+import { useCart } from "../context/CartContext";
 
 const ProductPage = () => {
   const [product, setProduct] = useState(null);
@@ -12,6 +13,7 @@ const ProductPage = () => {
   const [attempts, setAttempts] = useState(0); // Controla el número de intentos
   const { request } = useFetch();
   const { showNotification } = useNotification();
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -134,7 +136,7 @@ const ProductPage = () => {
               </Typography>
             </CardContent>
             <Box sx={{ px: 2, pb: 4, display: "flex", justifyContent: "center" }}>
-              <Button variant="contained" color="primary" size="large" disabled={product.stock === 0}>
+              <Button variant="contained" color="primary" size="large" disabled={product.stock === 0} onClick={() => addToCart(product)}>
                 <ShoppingCart sx={{ mr: 1 }} />
                 Añadir al carrito
               </Button>

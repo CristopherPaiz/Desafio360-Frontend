@@ -2,9 +2,11 @@ import { Card, CardContent, CardMedia, Typography, Button, Box, Chip } from "@mu
 import { Link } from "react-router-dom";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PropTypes from "prop-types";
+import { useCart } from "../context/CartContext";
 
 const CardProducto = ({ producto }) => {
   const { idProductos, nombre, marca, precio, foto, stock } = producto;
+  const { addToCart } = useCart();
 
   const isAgotado = stock === 0;
   const isCasiAgotado = stock < 50;
@@ -72,6 +74,8 @@ const CardProducto = ({ producto }) => {
           onClick={(e) => {
             if (isAgotado) {
               e.preventDefault();
+            } else {
+              addToCart(producto);
             }
           }}
           size="small"
