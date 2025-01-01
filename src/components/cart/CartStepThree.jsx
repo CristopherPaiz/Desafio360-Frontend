@@ -1,85 +1,81 @@
-import { Box, Typography, TextField, Button, FormControl, RadioGroup, FormControlLabel, Radio, Divider } from "@mui/material";
+import { Box, Typography, Button, FormControl, RadioGroup, FormControlLabel, Radio, Divider, Paper } from "@mui/material";
 import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 
-const CartStepThree = ({ onBack, onComplete }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+const CartStepThree = ({ onBack, onComplete, stepTwoData }) => {
+  const { handleSubmit } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
-    onComplete();
+    const finalData = {
+      paymentMethod: data.paymentMethod,
+      clientData: stepTwoData,
+    };
+    onComplete(finalData);
   };
 
   return (
     <Box sx={{ maxWidth: 800, mx: "auto" }}>
       <Typography variant="h6" sx={{ mb: 3 }}>
-        Datos de envío y pago
+        Confirmación de orden y pago
       </Typography>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          {/* Shipping Section */}
-          <Box>
-            <Typography variant="subtitle1" sx={{ mb: 2 }}>
-              Dirección de envío
+          <Paper elevation={1} sx={{ p: 3 }}>
+            <Typography variant="subtitle1" gutterBottom fontWeight="bold">
+              Datos del Cliente
             </Typography>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              <TextField
-                label="Dirección"
-                fullWidth
-                multiline
-                rows={2}
-                {...register("address", { required: "La dirección es requerida" })}
-                error={!!errors.address}
-                helperText={errors.address?.message}
-              />
+            <Box sx={{ display: "grid", gap: 2 }}>
+              <Box>
+                <Typography variant="subtitle2" color="text.secondary">
+                  Razón Social
+                </Typography>
+                <Typography>{stepTwoData?.clientDetails?.razon_social}</Typography>
+              </Box>
 
-              <Box sx={{ display: "flex", gap: 2 }}>
-                <TextField
-                  label="Departamento"
-                  fullWidth
-                  {...register("state", { required: "El departamento es requerido" })}
-                  error={!!errors.state}
-                  helperText={errors.state?.message}
-                />
+              <Box>
+                <Typography variant="subtitle2" color="text.secondary">
+                  Nombre Comercial
+                </Typography>
+                <Typography>{stepTwoData?.clientDetails?.nombre_comercial}</Typography>
+              </Box>
 
-                <TextField
-                  label="Ciudad"
-                  fullWidth
-                  {...register("city", { required: "La ciudad es requerida" })}
-                  error={!!errors.city}
-                  helperText={errors.city?.message}
-                />
+              <Box>
+                <Typography variant="subtitle2" color="text.secondary">
+                  Dirección de Entrega
+                </Typography>
+                <Typography>{stepTwoData?.clientDetails?.direccion_entrega}</Typography>
+              </Box>
 
-                <TextField
-                  label="Código Postal"
-                  fullWidth
-                  {...register("zipCode", { required: "El código postal es requerido" })}
-                  error={!!errors.zipCode}
-                  helperText={errors.zipCode?.message}
-                />
+              <Box>
+                <Typography variant="subtitle2" color="text.secondary">
+                  Teléfono
+                </Typography>
+                <Typography>{stepTwoData?.telefono}</Typography>
+              </Box>
+
+              <Box>
+                <Typography variant="subtitle2" color="text.secondary">
+                  Email
+                </Typography>
+                <Typography>{stepTwoData?.clientDetails?.email}</Typography>
               </Box>
             </Box>
-          </Box>
+          </Paper>
 
           <Divider />
 
-          {/* Payment Section */}
-          <Box>
-            <Typography variant="subtitle1" sx={{ mb: 2 }}>
+          <Paper elevation={1} sx={{ p: 3 }}>
+            <Typography variant="subtitle1" gutterBottom fontWeight="bold">
               Método de pago
             </Typography>
             <FormControl component="fieldset">
-              <RadioGroup defaultValue="creditCard">
+              <RadioGroup defaultValue="creditCard" name="paymentMethod">
                 <FormControlLabel value="creditCard" control={<Radio />} label="Tarjeta de crédito/débito" />
                 <FormControlLabel value="cash" control={<Radio />} label="Pago contra entrega" />
               </RadioGroup>
             </FormControl>
-          </Box>
+          </Paper>
 
           <Box sx={{ display: "flex", gap: 2, justifyContent: "flex-end", mt: 2 }}>
             <Button onClick={onBack}>Regresar</Button>
@@ -96,6 +92,7 @@ const CartStepThree = ({ onBack, onComplete }) => {
 CartStepThree.propTypes = {
   onBack: PropTypes.func.isRequired,
   onComplete: PropTypes.func.isRequired,
+  stepTwoData: PropTypes.object.isRequired,
 };
 
 export default CartStepThree;

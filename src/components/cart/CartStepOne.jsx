@@ -8,8 +8,19 @@ const CartStepOne = ({ onNext }) => {
   const { cart, countItemsInCart } = useCart();
 
   const calculateTotal = () => {
-    // Calcular el total de la compra Total = Sumatoria de (precio * cantidad) de cada producto
     return cart.reduce((total, item) => total + item.precio * (item.cantidad || 1), 0);
+  };
+
+  const handleNext = () => {
+    // Preparar los datos en el formato requerido
+    const detalles = cart.map((item) => ({
+      Productos_idProductos: item.idProductos,
+      cantidad: item.cantidad || 1,
+      precio: item.precio,
+    }));
+
+    // Llamar a onNext con los datos formateados
+    onNext({ detalles });
   };
 
   if (cart.length === 0) {
@@ -83,7 +94,7 @@ const CartStepOne = ({ onNext }) => {
             <Typography fontWeight="bold">Q {calculateTotal().toFixed(2)}</Typography>
           </Box>
 
-          <Button variant="contained" fullWidth color="primary" onClick={onNext} size="large">
+          <Button variant="contained" fullWidth color="primary" onClick={handleNext} size="large">
             Continuar con la compra
           </Button>
         </Box>
