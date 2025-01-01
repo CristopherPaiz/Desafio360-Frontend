@@ -8,6 +8,7 @@ import Page404 from "./Views/Page404";
 import HomePage from "./Views/HomePage";
 import ProductPage from "./Views/ProductPage";
 import CartPage from "./Views/CartPage";
+import ProductsFilterPage from "./Views/ProductFilterPage";
 
 const Ordenes = () => <h1>Ordenes</h1>;
 const Admin = () => <h1>Administración</h1>;
@@ -56,6 +57,14 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <CartPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/categorias/:id"
+              element={
+                <ProtectedRoute>
+                  <ProductsFilterPage />
                 </ProtectedRoute>
               }
             />

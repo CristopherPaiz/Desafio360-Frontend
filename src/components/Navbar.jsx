@@ -21,7 +21,6 @@ const Navbar = ({ cartItemsCount = 0, handleLogout, userType }) => {
   const menuConfig = {
     Cliente: [
       { icon: <Home />, text: "Inicio", path: "/" },
-      { icon: <Receipt />, text: "Mis Órdenes", path: "/mis-ordenes" },
       { icon: <ShoppingCart />, text: "Carrito", path: "/carrito" },
       { icon: <Logout />, text: "Cerrar Sesión", onClick: handleLogout },
     ],
