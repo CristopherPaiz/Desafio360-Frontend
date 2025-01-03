@@ -72,9 +72,14 @@ const OrdenDialog = ({ open, orden, onClose, onStatusChange }) => {
     switch (orden.estado) {
       case "Pendiente":
         return (
-          <Button onClick={() => handleStatusChange("Aprobado")} color="success" startIcon={<CheckCircle />}>
-            Aprobar
-          </Button>
+          <>
+            <Button onClick={() => handleStatusChange("Aprobado")} color="success" startIcon={<CheckCircle />}>
+              Aprobar
+            </Button>
+            <Button onClick={() => handleStatusChange("Inactivo")} color="error" startIcon={<RemoveShoppingCart />}>
+              Inactivar
+            </Button>
+          </>
         );
 
       case "Aprobado":
@@ -85,6 +90,9 @@ const OrdenDialog = ({ open, orden, onClose, onStatusChange }) => {
             </Button>
             <Button onClick={() => handleStatusChange("Tránsito")} color="info" startIcon={<LocalShipping />}>
               Marcar en Tránsito
+            </Button>
+            <Button onClick={() => handleStatusChange("Inactivo")} color="error" startIcon={<RemoveShoppingCart />}>
+              Inactivar
             </Button>
           </>
         );
@@ -194,7 +202,7 @@ const OrdenDialog = ({ open, orden, onClose, onStatusChange }) => {
           <Button onClick={() => setConfirmDeleteOpen(true)} color="error" startIcon={<DeleteForever />}>
             Eliminar definitivamente
           </Button>
-          
+
           <Button onClick={onClose} startIcon={<Close />}>
             Cerrar
           </Button>

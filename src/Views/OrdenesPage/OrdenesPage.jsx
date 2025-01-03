@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Tab, Container, Tabs } from "@mui/material";
+import { Box, Tab, Container, Tabs, Typography } from "@mui/material";
 import { useNotification } from "../../hooks/useNotification";
 import useFetch from "../../hooks/useFetch";
 import { URL_BASE } from "../../config/config";
@@ -18,9 +18,8 @@ const OrdenesPage = () => {
   const ESTADOS = {
     1: { nombre: "Activo", color: "#2196F3" },
     5: { nombre: "Aprobado", color: "#4CAF50" },
-    2: { nombre: "Inactivo", color: "#F44336" },
-    4: { nombre: "Pendiente", color: "#FF9800" },
-    3: { nombre: "Suspendido", color: "#9E9E9E" },
+    2: { nombre: "Inactivo", color: "#ffae00" },
+    4: { nombre: "Pendiente", color: "#8d8d8d" },
     6: { nombre: "Tránsito", color: "#891aff" },
   };
 
@@ -105,6 +104,9 @@ const OrdenesPage = () => {
 
   return (
     <Container maxWidth="xl">
+      <Typography variant="h4" gutterBottom>
+        Lista de Órdenes
+      </Typography>
       <Box sx={{ width: "100%", typography: "body1" }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs value={selectedTab} onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
