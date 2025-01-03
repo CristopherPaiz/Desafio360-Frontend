@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Grid, Slider, Typography, FormControl, InputLabel, Select, MenuItem, Container, Paper, CircularProgress } from "@mui/material";
+import { Box, Slider, Typography, FormControl, InputLabel, Select, MenuItem, Container, Paper, CircularProgress } from "@mui/material";
 import { URL_BASE } from "../config/config";
 import CardProducto from "../components/CardProducto";
 import useFetch from "../hooks/useFetch";
@@ -13,14 +13,12 @@ const ProductsFilterPage = () => {
   const [loading, setLoading] = useState(true);
   const { request } = useFetch();
 
-  // Get category ID from URL
   const getCategoryId = () => {
     const path = window.location.pathname;
     const segments = path.split("/");
     return segments[segments.length - 1];
   };
 
-  // Fetch products
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
@@ -32,28 +30,24 @@ const ProductsFilterPage = () => {
           setProducts(response.data);
           setFilteredProducts(response.data);
 
-          // Set initial price range based on products
           const maxPrice = Math.max(...response.data.map((p) => p.precio));
           setPriceRange([0, maxPrice]);
 
-          // Set initial stock range based on products
           const maxStock = Math.max(...response.data.map((p) => p.stock));
           setStockRange([0, maxStock]);
         }
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("Error al cargar los productos:", error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, []);
+  }, [request]);
 
-  // Get unique brands for filter
   const brands = [...new Set(products.map((product) => product.marca))];
 
-  // Apply filters
   useEffect(() => {
     const filtered = products.filter((product) => {
       const matchesBrand = !selectedBrand || product.marca === selectedBrand;
@@ -83,15 +77,13 @@ const ProductsFilterPage = () => {
 
   return (
     <Container maxWidth="xl">
-      <Grid container spacing={3}>
-        {/* Filters Section */}
-        <Grid item xs={12} md={3}>
+      <Box sx={{ display: "flex", gap: 3, flexDirection: { xs: "column", md: "row" } }}>
+        <Box sx={{ flex: { xs: "1", md: "0 0 25%" } }}>
           <Paper sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
               Filtros
             </Typography>
 
-            {/* Brand Filter */}
             <Box sx={{ mb: 4 }}>
               <FormControl fullWidth>
                 <InputLabel>Marca</InputLabel>
@@ -106,7 +98,6 @@ const ProductsFilterPage = () => {
               </FormControl>
             </Box>
 
-            {/* Price Range Filter */}
             <Box sx={{ mb: 4 }}>
               <Typography gutterBottom>Rango de Precio</Typography>
               <Slider
@@ -123,7 +114,6 @@ const ProductsFilterPage = () => {
               </Box>
             </Box>
 
-            {/* Stock Range Filter */}
             <Box sx={{ mb: 4 }}>
               <Typography gutterBottom>Rango de Stock</Typography>
               <Slider
@@ -139,19 +129,34 @@ const ProductsFilterPage = () => {
               </Box>
             </Box>
           </Paper>
-        </Grid>
+        </Box>
 
-        {/* Products Grid */}
-        <Grid item xs={12} md={9}>
-          <Grid container spacing={3}>
+        <Box sx={{ flex: 1 }}>
+          <Typography variant="h4" gutterBottom>
+            {products[0]?.categoria}
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 3,
+            }}
+          >
             {filteredProducts.map((product) => (
-              <Grid item xs={12} sm={6} md={4} key={product.idProductos}>
+              <Box
+                key={product.idProductos}
+                sx={{
+                  flex: "0 0 calc(33.333% - 16px)",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
                 <CardProducto producto={product} />
-              </Grid>
+              </Box>
             ))}
-          </Grid>
-        </Grid>
-      </Grid>
+          </Box>
+        </Box>
+      </Box>
     </Container>
   );
 };

@@ -78,6 +78,7 @@ const ProductPage = () => {
     );
   }
 
+  console.log("product", product);
   return (
     <Container sx={{ mt: 4 }}>
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 3 }}>

@@ -9,8 +9,8 @@ import HomePage from "./Views/HomePage";
 import ProductPage from "./Views/ProductPage";
 import CartPage from "./Views/CartPage";
 import ProductsFilterPage from "./Views/ProductFilterPage";
+import OrdenesPage from "./Views/OrdenesPage/OrdenesPage";
 
-const Ordenes = () => <h1>Ordenes</h1>;
 const Admin = () => <h1>Administración</h1>;
 
 const App = () => {
@@ -40,7 +40,7 @@ const App = () => {
               path="/ordenes"
               element={
                 <ProtectedRoute>
-                  <Ordenes />
+                  <OrdenesPage />
                 </ProtectedRoute>
               }
             />

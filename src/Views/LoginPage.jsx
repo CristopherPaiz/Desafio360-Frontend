@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Email, Lock } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
@@ -39,7 +40,15 @@ const LoginPage = () => {
     } else {
       setUserData(result.data.data); // Guardamos los datos del usuario
       login(result.data.mensaje); // Guardamos el token JWT
-      navigate("/");
+
+      const token = localStorage.getItem("authToken");
+      const decodedToken = jwtDecode(token);
+
+      if (decodedToken.rol === "Administrador" || decodedToken.rol === "Operador") {
+        navigate("/ordenes");
+      } else {
+        navigate("/");
+      }
     }
   };
 

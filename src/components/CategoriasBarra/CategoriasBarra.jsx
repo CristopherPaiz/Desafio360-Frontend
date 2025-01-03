@@ -58,7 +58,7 @@ const CategoriasBarra = () => {
               return (
                 <Link
                   key={categoria.idCategoriaProductos}
-                  to={`/categoria/${categoria.idCategoriaProductos}`}
+                  to={`/categorias/${categoria.idCategoriaProductos}`}
                   style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <Stack
