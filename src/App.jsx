@@ -10,8 +10,7 @@ import ProductPage from "./Views/ProductPage";
 import CartPage from "./Views/CartPage";
 import ProductsFilterPage from "./Views/ProductFilterPage";
 import OrdenesPage from "./Views/OrdenesPage/OrdenesPage";
-
-const Admin = () => <h1>Administración</h1>;
+import AdminPage from "./Views/AdminPage/AdminPage";
 
 const App = () => {
   return (
@@ -45,10 +44,10 @@ const App = () => {
               }
             />
             <Route
-              path="/admin"
+              path="/admin/*"
               element={
                 <ProtectedRoute>
-                  <Admin />
+                  <AdminPage />
                 </ProtectedRoute>
               }
             />

@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import { subYears } from "date-fns";
 
 // Esquema para el login
 export const loginSchema = yup.object().shape({
@@ -13,6 +14,23 @@ export const CartStepTwoSchema = yup.object().shape({
   telefono: yup
     .string()
     .matches(/^[0-9]{8}$/, "El teléfono debe tener 8 dígitos")
-    .required("El teléfono es requerido"),
+    .required("El teléfono es requerido")
+    .min(8, "El teléfono debe tener 8 dígitos")
+    .max(8, "El teléfono debe tener 8 dígitos"),
   cliente: yup.string().required("El cliente es requerido"),
+});
+
+// Esquema para el formulario de UserEditDialog
+export const schemaUserEdit = yup.object().shape({
+  rol_idrol: yup.number().required("El rol es requerido"),
+  estados_idestados: yup.number().required("El estado es requerido"),
+  correo_electronico: yup.string().email("Correo electrónico inválido").required("El correo es requerido"),
+  nombre_completo: yup.string().required("El nombre es requerido"),
+  telefono: yup
+    .string()
+    .matches(/^[0-9]{8}$/, "El teléfono debe tener 8 dígitos")
+    .required("El teléfono es requerido")
+    .min(8, "El teléfono debe tener 8 dígitos")
+    .max(8, "El teléfono debe tener 8 dígitos"),
+  fecha_nacimiento: yup.date().max(subYears(new Date(), 18), "Debe ser mayor de 18 años").required("La fecha de nacimiento es requerida"),
 });
