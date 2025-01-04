@@ -17,7 +17,6 @@ const roles = [
 ];
 
 const UserEditDialog = ({ open, onClose, user, onSave, estados }) => {
-    
   // Filtra los estados para que solo se muestren los estados "Activo" e "Inactivo"
   const filteredEstados = estados.filter((estado) => ["Activo", "Inactivo"].includes(estado.nombre));
 
@@ -37,57 +36,16 @@ const UserEditDialog = ({ open, onClose, user, onSave, estados }) => {
     },
   });
 
-  // Encuentra el rol correspondiente
   const onSubmit = (data) => {
     onSave(data);
   };
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Editar Usuario</DialogTitle>
+      <DialogTitle fontWeight={"bold"}>Editar Usuario</DialogTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <TextField
-              select
-              defaultValue={Number(roles.find((role) => role.name === user?.rol)?.id)}
-              label="Rol"
-              {...register("rol_idrol")}
-              error={!!errors.rol_idrol}
-              helperText={errors.rol_idrol?.message}
-              fullWidth
-            >
-              {roles.map((role) => (
-                <MenuItem key={role.id} value={role.id}>
-                  {role.name}
-                </MenuItem>
-              ))}
-            </TextField>
-
-            <TextField
-              select
-              defaultValue={filteredEstados.find((estado) => estado.nombre === user?.estado)?.idestados}
-              label="Estado"
-              {...register("estados_idestados")}
-              error={!!errors.estados_idestados}
-              helperText={errors.estados_idestados?.message}
-              fullWidth
-            >
-              {filteredEstados.map((estado) => (
-                <MenuItem key={estado.idestados} value={estado.idestados}>
-                  {estado.nombre}
-                </MenuItem>
-              ))}
-            </TextField>
-
-            <TextField
-              label="Correo Electrónico"
-              {...register("correo_electronico")}
-              error={!!errors.correo_electronico}
-              helperText={errors.correo_electronico?.message}
-              fullWidth
-            />
-
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2, p: 1 }}>
             <TextField
               label="Nombre Completo"
               {...register("nombre_completo")}
@@ -97,25 +55,71 @@ const UserEditDialog = ({ open, onClose, user, onSave, estados }) => {
             />
 
             <TextField
-              label="Teléfono"
-              type="number"
-              {...register("telefono")}
-              error={!!errors.telefono}
-              helperText={errors.telefono?.message}
+              label="Correo Electrónico"
+              {...register("correo_electronico")}
+              error={!!errors.correo_electronico}
+              helperText={errors.correo_electronico?.message}
               fullWidth
             />
 
-            <TextField
-              label="Fecha de Nacimiento"
-              type="date"
-              {...register("fecha_nacimiento")}
-              error={!!errors.fecha_nacimiento}
-              helperText={errors.fecha_nacimiento?.message}
-              fullWidth
-            />
+            {/* Rol y Estado */}
+            <Box sx={{ display: "flex", gap: 2 }}>
+              <TextField
+                select
+                defaultValue={Number(roles.find((role) => role.name === user?.rol)?.id)}
+                label="Rol"
+                {...register("rol_idrol")}
+                error={!!errors.rol_idrol}
+                helperText={errors.rol_idrol?.message}
+                fullWidth
+              >
+                {roles.map((role) => (
+                  <MenuItem key={role.id} value={role.id}>
+                    {role.name}
+                  </MenuItem>
+                ))}
+              </TextField>
+
+              <TextField
+                select
+                defaultValue={filteredEstados.find((estado) => estado.nombre === user?.estado)?.idestados}
+                label="Estado"
+                {...register("estados_idestados")}
+                error={!!errors.estados_idestados}
+                helperText={errors.estados_idestados?.message}
+                fullWidth
+              >
+                {filteredEstados.map((estado) => (
+                  <MenuItem key={estado.idestados} value={estado.idestados}>
+                    {estado.nombre}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Box>
+
+            {/* Teléfono y Fecha de Nacimiento */}
+            <Box sx={{ display: "flex", gap: 2 }}>
+              <TextField
+                label="Fecha de Nacimiento"
+                type="date"
+                {...register("fecha_nacimiento")}
+                error={!!errors.fecha_nacimiento}
+                helperText={errors.fecha_nacimiento?.message}
+                fullWidth
+              />
+
+              <TextField
+                label="Teléfono"
+                type="number"
+                {...register("telefono")}
+                error={!!errors.telefono}
+                helperText={errors.telefono?.message}
+                fullWidth
+              />
+            </Box>
           </Box>
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ pb: 4, pr: 4 }}>
           <Button onClick={onClose} startIcon={<CancelIcon />}>
             Cancelar
           </Button>

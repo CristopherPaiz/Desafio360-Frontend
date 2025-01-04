@@ -29,6 +29,8 @@ import {
   Phone as PhoneIcon,
   Settings as SettingsIcon,
   ExpandMore as ExpandMoreIcon,
+  DisabledByDefault,
+  PersonSearch,
 } from "@mui/icons-material";
 
 const ListUsersPage = () => {
@@ -210,59 +212,66 @@ const ListUsersPage = () => {
 
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography fontWeight={"bold"} fontSize={"1.3rem"}>
-            Clientes
-          </Typography>
+          <Box display="flex" alignItems="center" gap={2}>
+            <PersonSearch />
+            <Typography variant="h6">Clientes</Typography>
+          </Box>
         </AccordionSummary>
         <AccordionDetails>{renderTable(filteredUsers.active?.clientes || [])}</AccordionDetails>
       </Accordion>
 
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography fontWeight={"bold"} fontSize={"1.3rem"}>
-            Operadores
-          </Typography>
+          <Box display="flex" alignItems="center" gap={2}>
+            <PersonIcon />
+            <Typography variant="h6">Operadores</Typography>
+          </Box>
         </AccordionSummary>
         <AccordionDetails>{renderTable(filteredUsers.active?.operadores || [])}</AccordionDetails>
       </Accordion>
 
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography fontWeight={"bold"} fontSize={"1.3rem"}>
-            Administradores
-          </Typography>
+          <Box display="flex" alignItems="center" gap={2}>
+            <SettingsIcon />
+            <Typography variant="h6">Administradores</Typography>
+          </Box>
         </AccordionSummary>
         <AccordionDetails>{renderTable(filteredUsers.active?.administradores || [])}</AccordionDetails>
       </Accordion>
 
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography fontWeight={"bold"} fontSize={"1.3rem"}>
-            Inactivos
-          </Typography>
+          <Box display="flex" alignItems="center" gap={2}>
+            <DisabledByDefault />
+            <Typography variant="h6">Inactivos</Typography>
+          </Box>
         </AccordionSummary>
         <AccordionDetails>
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography fontWeight={"bold"} fontSize={"1.3rem"}>
-                Clientes
-              </Typography>
+              <Box display="flex" alignItems="center" gap={2}>
+                <PersonSearch />
+                <Typography variant="h6">Clientes</Typography>
+              </Box>
             </AccordionSummary>
             <AccordionDetails>{renderTable(filteredUsers.inactive?.clientes || [])}</AccordionDetails>
           </Accordion>
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography fontWeight={"bold"} fontSize={"1.3rem"}>
-                Operadores
-              </Typography>
+              <Box display="flex" alignItems="center" gap={2}>
+                <PersonIcon />
+                <Typography variant="h6">Operadores</Typography>
+              </Box>
             </AccordionSummary>
             <AccordionDetails>{renderTable(filteredUsers.inactive?.operadores || [])}</AccordionDetails>
           </Accordion>
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography fontWeight={"bold"} fontSize={"1.3rem"}>
-                Administradores
-              </Typography>
+              <Box display="flex" alignItems="center" gap={2}>
+                <SettingsIcon />
+                <Typography variant="h6">Administradores</Typography>
+              </Box>
             </AccordionSummary>
             <AccordionDetails>{renderTable(filteredUsers.inactive?.administradores || [])}</AccordionDetails>
           </Accordion>
