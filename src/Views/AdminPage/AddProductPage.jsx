@@ -79,10 +79,9 @@ const AddProductPage = () => {
     setSubmitting(true);
     const formData = new FormData();
 
-    // Append all form data
     formData.append("imagen", data.imagen);
     formData.append("CategoriaProductos_idCategoriaProductos", data.CategoriaProductos_idCategoriaProductos);
-    formData.append("usuarios_idusuarios", userData.idusuarios); // Assuming userData is available in scope
+    formData.append("usuarios_idusuarios", userData.idusuarios);
     formData.append("nombre", data.nombre);
     formData.append("marca", data.marca);
     formData.append("codigo", data.codigo);
@@ -131,7 +130,7 @@ const AddProductPage = () => {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
-            {/* Image Upload */}
+            {/* Imagen */}
             <Box sx={{ flex: "1 1 100%" }}>
               <input accept="image/*" style={{ display: "none" }} id="image-upload" type="file" onChange={handleImageChange} />
               <label htmlFor="image-upload">
@@ -147,7 +146,7 @@ const AddProductPage = () => {
               )}
             </Box>
 
-            {/* Category Select */}
+            {/* Categoria */}
             <Box sx={{ flex: "1 1 calc(50% - 16px)" }}>
               <FormControl fullWidth error={!!errors.CategoriaProductos_idCategoriaProductos}>
                 <InputLabel>Categoría</InputLabel>
@@ -164,7 +163,7 @@ const AddProductPage = () => {
               </FormControl>
             </Box>
 
-            {/* Product Name */}
+            {/* Nombre */}
             <Box sx={{ flex: "1 1 calc(50% - 16px)" }}>
               <Box sx={{ display: "flex", alignItems: "flex-end" }}>
                 <LabelIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
@@ -178,7 +177,7 @@ const AddProductPage = () => {
               </Box>
             </Box>
 
-            {/* Brand */}
+            {/* Marca */}
             <Box sx={{ flex: "1 1 calc(50% - 16px)" }}>
               <Box sx={{ display: "flex", alignItems: "flex-end" }}>
                 <LabelIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
@@ -186,7 +185,7 @@ const AddProductPage = () => {
               </Box>
             </Box>
 
-            {/* Code */}
+            {/* Codigo */}
             <Box sx={{ flex: "1 1 calc(50% - 16px)" }}>
               <Box sx={{ display: "flex", alignItems: "flex-end" }}>
                 <QrCodeIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
@@ -209,14 +208,14 @@ const AddProductPage = () => {
               </Box>
             </Box>
 
-            {/* Price */}
+            {/* Precio */}
             <Box sx={{ flex: "1 1 calc(50% - 16px)" }}>
               <Box sx={{ display: "flex", alignItems: "flex-end" }}>
                 <MoneyIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
                 <TextField
                   fullWidth
                   label="Precio (GTQ)"
-                  type="number"
+                  type="text"
                   {...register("precio")}
                   error={!!errors.precio}
                   helperText={errors.precio?.message}
@@ -224,7 +223,7 @@ const AddProductPage = () => {
               </Box>
             </Box>
 
-            {/* Submit Buttons */}
+            {/* Botones */}
             <Box sx={{ flex: "1 1 100%", display: "flex", justifyContent: "flex-end", gap: 2, mt: 2 }}>
               <Button
                 variant="outlined"
