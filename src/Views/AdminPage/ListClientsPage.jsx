@@ -15,6 +15,12 @@ import {
   Typography,
   CircularProgress,
   TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
 } from "@mui/material";
 import {
   Edit as EditIcon,
@@ -33,6 +39,8 @@ const ListClientsPage = () => {
   const [loading, setLoading] = useState(true);
   const [editClient, setEditClient] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [clientToDelete, setClientToDelete] = useState(null);
 
   const { request } = useFetch();
   const { showNotification } = useNotification();
@@ -81,31 +89,42 @@ const ListClientsPage = () => {
     setEditClient(client);
   };
 
-  const handleDelete = async (clientId) => {
-    if (window.confirm("¿Está seguro de eliminar este cliente?")) {
-      try {
-        const response = await request(`${URL_BASE}/clientes/${clientId}`, "DELETE", null);
+  const handleDeleteClick = (client) => {
+    setClientToDelete(client);
+    setDeleteDialogOpen(true);
+  };
 
-        if (response.error) {
-          showNotification({
-            message: response.error || "Error al eliminar el cliente",
-            severity: "error",
-          });
-        } else {
-          showNotification({
-            message: "Cliente eliminado exitosamente",
-            severity: "success",
-          });
-          fetchData();
-        }
-      } catch (error) {
-        console.log(error);
+  const handleDeleteConfirm = async () => {
+    try {
+      const response = await request(`${URL_BASE}/clientes/${clientToDelete.idClientes}`, "DELETE", null);
+
+      if (response.error) {
         showNotification({
-          message: "Error al eliminar el cliente",
+          message: response.error || "Error al eliminar el cliente",
           severity: "error",
         });
+      } else {
+        showNotification({
+          message: "Cliente eliminado exitosamente",
+          severity: "success",
+        });
+        fetchData();
       }
+    } catch (error) {
+      console.log(error);
+      showNotification({
+        message: "Error al eliminar el cliente",
+        severity: "error",
+      });
+    } finally {
+      setDeleteDialogOpen(false);
+      setClientToDelete(null);
     }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteDialogOpen(false);
+    setClientToDelete(null);
   };
 
   const handleSave = async (updatedData) => {
@@ -210,7 +229,7 @@ const ListClientsPage = () => {
                     <IconButton onClick={() => handleEdit(client)} color="primary">
                       <EditIcon />
                     </IconButton>
-                    <IconButton onClick={() => handleDelete(client.idClientes)} color="error">
+                    <IconButton onClick={() => handleDeleteClick(client)} color="error">
                       <DeleteIcon />
                     </IconButton>
                   </Box>
@@ -222,6 +241,23 @@ const ListClientsPage = () => {
       </TableContainer>
 
       {editClient && <ClientEditDialog open={!!editClient} onClose={() => setEditClient(null)} client={editClient} onSave={handleSave} />}
+
+      <Dialog open={deleteDialogOpen} onClose={handleDeleteCancel}>
+        <DialogTitle>Confirmar Eliminación</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            ¿Está seguro que desea eliminar el cliente &quot;{clientToDelete?.razon_social}&quot;? ¡ESTA OPCIÓN NO SE PUEDE DESHACER!
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="error" variant="contained" autoFocus>
+            Eliminar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

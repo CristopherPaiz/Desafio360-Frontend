@@ -46,3 +46,44 @@ export const schemaClientEdit = yup.object().shape({
     .min(8, "El teléfono debe tener al menos 8 dígitos"),
   email: yup.string().email("Correo electrónico inválido").required("El correo electrónico es requerido"),
 });
+
+export const schemaAddClient = yup.object().shape({
+  razon_social: yup.string().required("La razón social es requerida").min(3, "La razón social debe tener al menos 3 caracteres"),
+  nombre_comercial: yup.string().required("El nombre comercial es requerido").min(3, "El nombre comercial debe tener al menos 3 caracteres"),
+  direccion_entrega: yup.string().required("La dirección de entrega es requerida").min(5, "La dirección debe tener al menos 5 caracteres"),
+  telefono: yup
+    .string()
+    .required("El teléfono es requerido")
+    .matches(/^[0-9]+$/, "El teléfono debe contener solo números")
+    .min(8, "El teléfono debe tener al menos 8 dígitos"),
+  email: yup.string().required("El email es requerido").email("Ingrese un email válido"),
+});
+
+// Función para calcular la fecha mínima (18 años atrás desde hoy)
+const getMinDate = () => {
+  const date = new Date();
+  date.setFullYear(date.getFullYear() - 18);
+  return date;
+};
+
+export const schemaAddUser = yup.object().shape({
+  rol_idrol: yup.number().required("El rol es requerido"),
+  correo_electronico: yup.string().required("El correo electrónico es requerido").email("Ingrese un correo electrónico válido"),
+  nombre_completo: yup.string().required("El nombre completo es requerido").min(3, "El nombre debe tener al menos 3 caracteres"),
+  password: yup.string().required("La contraseña es requerida").min(6, "La contraseña debe tener al menos 6 caracteres"),
+  confirmPassword: yup
+    .string()
+    .required("Confirme la contraseña")
+    .oneOf([yup.ref("password")], "Las contraseñas no coinciden"),
+  telefono: yup
+    .number()
+    .required("El teléfono es requerido")
+    .typeError("El teléfono debe ser un número")
+    .min(10000000, "El teléfono debe tener 8 dígitos")
+    .max(99999999, "El teléfono debe tener 8 dígitos"),
+  fecha_nacimiento: yup
+    .date()
+    .required("La fecha de nacimiento es requerida")
+    .max(getMinDate(), "Debe ser mayor de 18 años")
+    .typeError("Ingrese una fecha válida"),
+});

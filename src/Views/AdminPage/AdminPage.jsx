@@ -7,9 +7,8 @@ import { Person as PersonIcon, People as PeopleIcon, ExpandLess, ExpandMore, Add
 import BienvenidoPage from "./BienvenidoPage";
 import ListUsersPage from "./ListUsersPage";
 import ListClientsPage from "./ListClientsPage";
-
-const AddUsers = () => <div>Agregar Usuarios</div>;
-const AddClient = () => <div>Agregar Cliente</div>;
+import AddClientsPage from "./AddClientsPage";
+import AddUsersPage from "./AddUsersPage";
 
 const OPCIONES = {
   usuarios: {
@@ -155,7 +154,7 @@ const AdminPage = () => {
             path="/usuarios/agregar"
             element={
               <Box>
-                <AddUsers />
+                <AddUsersPage />
               </Box>
             }
           />
@@ -172,7 +171,7 @@ const AdminPage = () => {
             path="/clientes/agregar"
             element={
               <Box>
-                <AddClient />
+                <AddClientsPage />
               </Box>
             }
           />
