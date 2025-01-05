@@ -34,3 +34,15 @@ export const schemaUserEdit = yup.object().shape({
     .max(8, "El teléfono debe tener 8 dígitos"),
   fecha_nacimiento: yup.date().max(subYears(new Date(), 18), "Debe ser mayor de 18 años").required("La fecha de nacimiento es requerida"),
 });
+
+export const schemaClientEdit = yup.object().shape({
+  razon_social: yup.string().required("La razón social es requerida"),
+  nombre_comercial: yup.string().required("El nombre comercial es requerido"),
+  direccion_entrega: yup.string().required("La dirección de entrega es requerida"),
+  telefono: yup
+    .string()
+    .required("El teléfono es requerido")
+    .matches(/^[0-9]+$/, "El teléfono solo debe contener números")
+    .min(8, "El teléfono debe tener al menos 8 dígitos"),
+  email: yup.string().email("Correo electrónico inválido").required("El correo electrónico es requerido"),
+});

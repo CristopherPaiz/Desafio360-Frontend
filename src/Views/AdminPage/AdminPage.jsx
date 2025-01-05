@@ -6,10 +6,10 @@ import { Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Box, Circ
 import { Person as PersonIcon, People as PeopleIcon, ExpandLess, ExpandMore, Add as AddIcon, List as ListIcon } from "@mui/icons-material";
 import BienvenidoPage from "./BienvenidoPage";
 import ListUsersPage from "./ListUsersPage";
+import ListClientsPage from "./ListClientsPage";
 
 const AddUsers = () => <div>Agregar Usuarios</div>;
 const AddClient = () => <div>Agregar Cliente</div>;
-const ListClient = () => <div>Listado de Clientes</div>;
 
 const OPCIONES = {
   usuarios: {
@@ -180,7 +180,7 @@ const AdminPage = () => {
             path="/clientes/listado"
             element={
               <Box>
-                <ListClient />
+                <ListClientsPage />
               </Box>
             }
           />
