@@ -130,33 +130,26 @@ const AddProductPage = () => {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
-            {/* Imagen */}
-            <Box sx={{ flex: "1 1 100%" }}>
-              <input accept="image/*" style={{ display: "none" }} id="image-upload" type="file" onChange={handleImageChange} />
-              <label htmlFor="image-upload">
-                <Button variant="outlined" component="span" startIcon={<ImageIcon />} sx={{ mb: 2 }}>
-                  Subir Imagen
-                </Button>
-              </label>
-              {errors.imagen && <FormHelperText error>{errors.imagen.message}</FormHelperText>}
-              {imagePreview && (
-                <Box sx={{ mt: 2, mb: 2 }}>
-                  <img src={imagePreview} alt="Preview" style={{ maxWidth: "200px", maxHeight: "200px" }} />
-                </Box>
-              )}
-            </Box>
-
             {/* Categoria */}
             <Box sx={{ flex: "1 1 calc(50% - 16px)" }}>
               <FormControl fullWidth error={!!errors.CategoriaProductos_idCategoriaProductos}>
-                <InputLabel>Categoría</InputLabel>
-                <Select {...register("CategoriaProductos_idCategoriaProductos")} label="Categoría" startAdornment={<CategoryIcon sx={{ mr: 1 }} />}>
-                  {categories.map((category) => (
-                    <MenuItem key={category.idCategoriaProductos} value={category.idCategoriaProductos}>
-                      {category.nombre}
-                    </MenuItem>
-                  ))}
-                </Select>
+                <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                  <CategoryIcon sx={{ mr: 1 }} />
+                  <InputLabel id="categoria-label" sx={{ ml: 4 }}>
+                    Categoría
+                  </InputLabel>
+                  <Select labelId="categoria-label" fullWidth {...register("CategoriaProductos_idCategoriaProductos")} defaultValue="">
+                    <MenuItem value="" disabled>
+                      Seleccione una categoría
+                    </MenuItem>{" "}
+                    {/* Placeholder */}
+                    {categories.map((category) => (
+                      <MenuItem key={category.idCategoriaProductos} value={category.idCategoriaProductos}>
+                        {category.nombre}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Box>
                 {errors.CategoriaProductos_idCategoriaProductos && (
                   <FormHelperText>{errors.CategoriaProductos_idCategoriaProductos.message}</FormHelperText>
                 )}
@@ -166,7 +159,7 @@ const AddProductPage = () => {
             {/* Nombre */}
             <Box sx={{ flex: "1 1 calc(50% - 16px)" }}>
               <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                <LabelIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+                <LabelIcon sx={{ mr: 1, my: 0.5 }} />
                 <TextField
                   fullWidth
                   label="Nombre del Producto"
@@ -180,7 +173,7 @@ const AddProductPage = () => {
             {/* Marca */}
             <Box sx={{ flex: "1 1 calc(50% - 16px)" }}>
               <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                <LabelIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+                <LabelIcon sx={{ mr: 1, my: 0.5 }} />
                 <TextField fullWidth label="Marca" {...register("marca")} error={!!errors.marca} helperText={errors.marca?.message} />
               </Box>
             </Box>
@@ -188,7 +181,7 @@ const AddProductPage = () => {
             {/* Codigo */}
             <Box sx={{ flex: "1 1 calc(50% - 16px)" }}>
               <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                <QrCodeIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+                <QrCodeIcon sx={{ mr: 1, my: 0.5 }} />
                 <TextField fullWidth label="Código" {...register("codigo")} error={!!errors.codigo} helperText={errors.codigo?.message} />
               </Box>
             </Box>
@@ -196,7 +189,7 @@ const AddProductPage = () => {
             {/* Stock */}
             <Box sx={{ flex: "1 1 calc(50% - 16px)" }}>
               <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                <WarehouseIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+                <WarehouseIcon sx={{ mr: 1, my: 0.5 }} />
                 <TextField
                   fullWidth
                   label="Stock Inicial"
@@ -211,7 +204,7 @@ const AddProductPage = () => {
             {/* Precio */}
             <Box sx={{ flex: "1 1 calc(50% - 16px)" }}>
               <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                <MoneyIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />
+                <MoneyIcon sx={{ mr: 1, my: 0.5 }} />
                 <TextField
                   fullWidth
                   label="Precio (GTQ)"
@@ -221,6 +214,22 @@ const AddProductPage = () => {
                   helperText={errors.precio?.message}
                 />
               </Box>
+            </Box>
+
+            {/* Imagen */}
+            <Box sx={{ flex: "1 1 100%" }}>
+              <input accept="image/*" style={{ display: "none" }} id="image-upload" type="file" onChange={handleImageChange} />
+              <label htmlFor="image-upload">
+                <Button variant="outlined" component="span" startIcon={<ImageIcon />} sx={{ mb: 2 }}>
+                  Subir Imagen
+                </Button>
+              </label>
+              {errors.imagen && <FormHelperText error>{errors.imagen.message}</FormHelperText>}
+              {imagePreview && (
+                <Box sx={{ mt: 2, mb: 2 }}>
+                  <img src={imagePreview} alt="Preview" style={{ maxWidth: "100px", maxHeight: "100px" }} />
+                </Box>
+              )}
             </Box>
 
             {/* Botones */}

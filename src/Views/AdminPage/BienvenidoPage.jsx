@@ -1,5 +1,5 @@
 import { Box, Typography, List, ListItem, ListItemIcon, ListItemText, Paper } from "@mui/material";
-import { Person as PersonIcon, People as PeopleIcon } from "@mui/icons-material";
+import { Person as PersonIcon, People as PeopleIcon, Inventory as InventoryIcon, Category as CategoryIcon } from "@mui/icons-material";
 
 const OPCIONES = [
   {
@@ -11,6 +11,16 @@ const OPCIONES = [
     title: "Clientes",
     description: "Gestione la información de los clientes. Agregue nuevos clientes o consulte el listado.",
     icon: <PeopleIcon />,
+  },
+  {
+    title: "Productos",
+    description: "Administre los productos de la empresa. Agregue nuevos productos o consulte el listado.",
+    icon: <InventoryIcon />,
+  },
+  {
+    title: "Categorías",
+    description: "Gestione las categorías de los productos. Agregue nuevas categorías o consulte el listado existente.",
+    icon: <CategoryIcon />,
   },
 ];
 
