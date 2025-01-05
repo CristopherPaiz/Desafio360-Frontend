@@ -11,6 +11,7 @@ import CartPage from "./Views/CartPage";
 import ProductsFilterPage from "./Views/ProductFilterPage";
 import OrdenesPage from "./Views/OrdenesPage/OrdenesPage";
 import AdminPage from "./Views/AdminPage/AdminPage";
+import OrdenesClient from "./Views/OrdenesClient";
 
 const App = () => {
   return (
@@ -32,6 +33,14 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <ProductPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/mis-ordenes"
+              element={
+                <ProtectedRoute>
+                  <OrdenesClient />
                 </ProtectedRoute>
               }
             />
