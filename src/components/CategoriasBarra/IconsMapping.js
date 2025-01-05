@@ -9,5 +9,6 @@ export const categoryIcons = {
   "Hogar y Cocina": HomeIcon,
   Papelería: SchoolIcon,
   Ferretería: BuildIcon,
-  "Línea Blanca Actualizada": KitchenIcon,
+  "Línea Blanca": KitchenIcon,
+  Chipox: KitchenIcon,
 };
