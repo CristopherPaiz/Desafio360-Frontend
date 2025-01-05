@@ -108,3 +108,20 @@ export const schemaAddProduct = yup.object().shape({
   CategoriaProductos_idCategoriaProductos: yup.number().required("La categoría es requerida"),
   imagen: yup.mixed().required("La imagen es requerida"),
 });
+
+export const schemaAddCategory = yup.object().shape({
+  nombre: yup
+    .string()
+    .required("El nombre de la categoría es obligatorio")
+    .min(3, "El nombre de la categoría debe tener al menos 3 caracteres")
+    .max(100, "El nombre de la categoría no puede tener más de 100 caracteres"),
+});
+
+export const schemaEditCategory = yup.object().shape({
+  nombre: yup
+    .string()
+    .required("El nombre de la categoría es obligatorio")
+    .min(3, "El nombre de la categoría debe tener al menos 3 caracteres")
+    .max(100, "El nombre de la categoría no puede tener más de 100 caracteres"),
+  estados_idestados: yup.number().required("El estado es requerido").oneOf([1, 2], "El estado debe ser 1 o 2"),
+});

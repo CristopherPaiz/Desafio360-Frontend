@@ -20,6 +20,8 @@ import AddClientsPage from "./AddClientsPage";
 import AddUsersPage from "./AddUsersPage";
 import ListProductsPage from "./ListProductsPage";
 import AddProductPage from "./AddProductPage";
+import AddCategoryPage from "./AddCategoryPage";
+import ListCategoriesPage from "./ListCategoriesPage";
 
 const OPCIONES = {
   usuarios: {
@@ -218,6 +220,23 @@ const AdminPage = () => {
             element={
               <Box>
                 <ListProductsPage />
+              </Box>
+            }
+          />
+          <Route path="/categorias" element={<Box>Seleccione una opción de categorías</Box>} />
+          <Route
+            path="/categorias/agregar"
+            element={
+              <Box>
+                <AddCategoryPage />
+              </Box>
+            }
+          />
+          <Route
+            path="/categorias/listado"
+            element={
+              <Box>
+                <ListCategoriesPage />
               </Box>
             }
           />
