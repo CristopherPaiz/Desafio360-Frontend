@@ -3,12 +3,23 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, Routes, Route } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Collapse, Box, CircularProgress, Alert } from "@mui/material";
-import { Person as PersonIcon, People as PeopleIcon, ExpandLess, ExpandMore, Add as AddIcon, List as ListIcon } from "@mui/icons-material";
+import {
+  Inventory2 as ProductsIcon,
+  Person as PersonIcon,
+  People as PeopleIcon,
+  ExpandLess,
+  ExpandMore,
+  Add as AddIcon,
+  List as ListIcon,
+  Widgets as CategoryIcon,
+} from "@mui/icons-material";
 import BienvenidoPage from "./BienvenidoPage";
 import ListUsersPage from "./ListUsersPage";
 import ListClientsPage from "./ListClientsPage";
 import AddClientsPage from "./AddClientsPage";
 import AddUsersPage from "./AddUsersPage";
+import ListProductsPage from "./ListProductsPage";
+import AddProductPage from "./AddProductPage";
 
 const OPCIONES = {
   usuarios: {
@@ -19,11 +30,21 @@ const OPCIONES = {
     Agregar: "/admin/clientes/agregar",
     Listado: "/admin/clientes/listado",
   },
+  productos: {
+    Agregar: "/admin/productos/agregar",
+    Listado: "/admin/productos/listado",
+  },
+  categorias: {
+    Agregar: "/admin/categorias/agregar",
+    Listado: "/admin/categorias/listado",
+  },
 };
 
 const ICONS = {
   usuarios: <PersonIcon fontSize="small" />,
   clientes: <PeopleIcon fontSize="small" />,
+  productos: <ProductsIcon fontSize="small" />,
+  categorias: <CategoryIcon fontSize="small" />,
 };
 
 const SUBITEM_ICONS = {
@@ -180,6 +201,23 @@ const AdminPage = () => {
             element={
               <Box>
                 <ListClientsPage />
+              </Box>
+            }
+          />
+          <Route path="/productos" element={<Box>Seleccione una opción de productos</Box>} />
+          <Route
+            path="/productos/agregar"
+            element={
+              <Box>
+                <AddProductPage />
+              </Box>
+            }
+          />
+          <Route
+            path="/productos/listado"
+            element={
+              <Box>
+                <ListProductsPage />
               </Box>
             }
           />

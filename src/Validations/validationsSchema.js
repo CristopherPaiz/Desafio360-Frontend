@@ -87,3 +87,24 @@ export const schemaAddUser = yup.object().shape({
     .max(getMinDate(), "Debe ser mayor de 18 años")
     .typeError("Ingrese una fecha válida"),
 });
+
+export const schemaProductEdit = yup.object().shape({
+  CategoriaProductos_idCategoriaProductos: yup.number().required("La categoría es requerida"),
+  usuarios_idusuarios: yup.number().required("El usuario es requerido"),
+  nombre: yup.string().required("El nombre es requerido"),
+  marca: yup.string().required("La marca es requerida"),
+  codigo: yup.string().required("El código es requerido"),
+  stock: yup.number().required("El stock es requerido").min(0, "El stock debe ser positivo"),
+  precio: yup.number().required("El precio es requerido").min(0, "El precio debe ser positivo"),
+  imagen: yup.mixed(),
+});
+
+export const schemaAddProduct = yup.object().shape({
+  nombre: yup.string().required("El nombre es requerido"),
+  marca: yup.string().required("La marca es requerida"),
+  codigo: yup.string().required("El código es requerido"),
+  stock: yup.number().required("El stock es requerido").min(0, "El stock debe ser mayor o igual a 0"),
+  precio: yup.number().required("El precio es requerido").min(0, "El precio debe ser mayor a 0"),
+  CategoriaProductos_idCategoriaProductos: yup.number().required("La categoría es requerida"),
+  imagen: yup.mixed().required("La imagen es requerida"),
+});

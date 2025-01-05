@@ -11,7 +11,7 @@ const useFetch = () => {
   };
 
   const request = useCallback(
-    async (url, method = "GET", body = null, timeout = 30000) => {
+    async (url, method = "GET", body = null, options = {}, timeout = 30000) => {
       setLoading(true);
       setError(null);
 
@@ -20,9 +20,12 @@ const useFetch = () => {
 
       try {
         // Preparar headers
-        const headers = {
-          "Content-Type": "application/json",
-        };
+        const headers = {};
+
+        // Establecer `Content-Type` si no es multipart
+        if (!options.img) {
+          headers["Content-Type"] = "application/json";
+        }
 
         // Agregar token si existe y no es una petición de login
         if (isAuthenticated || url.includes("/login")) {
@@ -32,10 +35,12 @@ const useFetch = () => {
           }
         }
 
+        const requestBody = options.img ? body : body ? JSON.stringify(body) : null;
+
         const response = await fetch(url, {
           method,
           headers,
-          body: body ? JSON.stringify(body) : null,
+          body: requestBody,
           signal: controller.signal,
         });
 
