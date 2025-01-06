@@ -66,13 +66,17 @@ const ProductosPorCategoria = () => {
 
   useEffect(() => {
     fetchCategorias();
-  }, [fetchCategorias]);
+  }, []);
 
   useEffect(() => {
     if (!isInitialLoad && categorias.length > 0) {
       fetchProductosPorCategoria();
     }
-  }, [categorias, fetchProductosPorCategoria, isInitialLoad]);
+  }, []);
+
+  if (categorias.length === 0) {
+    return <Box>No hay productos disponibles</Box>;
+  }
 
   return (
     <Box>

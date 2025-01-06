@@ -26,7 +26,11 @@ const CategoriasBarra = () => {
     };
 
     fetchCategorias();
-  }, [showNotification, request]);
+  }, []);
+
+  if (!categorias.length) {
+    return null;
+  }
 
   if (loading) {
     return <CategoriasSkeleton />;
