@@ -1,9 +1,10 @@
-import { AppBar, Toolbar, Button, IconButton, Badge, Box, InputBase, Paper, Menu, MenuItem, ListItemIcon, ListItemText } from "@mui/material";
-import { ShoppingCart, Home, Receipt, Settings, Logout, Search, Menu as MenuIcon } from "@mui/icons-material";
+import { AppBar, Toolbar, Button, IconButton, Badge, Box, Menu, MenuItem, ListItemIcon, ListItemText } from "@mui/material";
+import { ShoppingCart, Home, Receipt, Settings, Logout, Menu as MenuIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import useIsSmallScreen from "../hooks/useIsSmallScreen";
+import SearchBar from "./SearchBar";
 
 const Navbar = ({ cartItemsCount = 0, handleLogout, userType }) => {
   const navigate = useNavigate();
@@ -80,21 +81,7 @@ const Navbar = ({ cartItemsCount = 0, handleLogout, userType }) => {
             mx: isSmallScreen ? 1 : 2,
           }}
         >
-          <Paper
-            component="form"
-            sx={{
-              p: "2px 4px",
-              display: "flex",
-              alignItems: "center",
-              width: isSmallScreen ? "100%" : "50%",
-              bgcolor: "background.paper",
-            }}
-          >
-            <InputBase sx={{ ml: 1, flex: 1 }} placeholder={isSmallScreen ? "Buscar..." : "Buscar productos..."} />
-            <IconButton type="submit" sx={{ p: "10px" }}>
-              <Search />
-            </IconButton>
-          </Paper>
+          <SearchBar isSmallScreen={isSmallScreen} />
         </Box>
 
         {isSmallScreen ? (
