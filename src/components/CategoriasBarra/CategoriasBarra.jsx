@@ -57,7 +57,7 @@ const CategoriasBarra = () => {
             }}
           >
             {categorias.map((categoria) => {
-              const IconComponent = categoryIcons[categoria.nombre] || categoryIcons["default"];
+              const IconComponent = categoryIcons[categoria.nombre];
 
               return (
                 <Link
@@ -78,12 +78,22 @@ const CategoriasBarra = () => {
                       },
                     }}
                   >
-                    <IconComponent
-                      sx={{
-                        fontSize: 40,
-                        color: "gray",
-                      }}
-                    />
+                    {IconComponent ? (
+                      <IconComponent
+                        sx={{
+                          fontSize: 40,
+                          color: "gray",
+                        }}
+                      />
+                    ) : (
+                      <Box
+                        sx={{
+                          width: 40,
+                          height: 40,
+                          backgroundColor: "transparent",
+                        }}
+                      />
+                    )}
                     <Typography
                       variant="caption"
                       align="center"
