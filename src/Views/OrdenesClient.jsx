@@ -1,210 +1,330 @@
 import { useEffect, useState } from "react";
-import { Box, CircularProgress, List, ListItem, ListItemIcon, Typography, Modal, Paper, Divider } from "@mui/material";
 import {
-  Info as InfoIcon,
+  Box,
+  CircularProgress,
+  ListItem,
+  Typography,
+  Modal,
+  Paper,
+  Divider,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Chip,
+  Grid,
+} from "@mui/material";
+import {
   Person as PersonIcon,
   Home as HomeIcon,
   Email as EmailIcon,
   Phone as PhoneIcon,
   CalendarToday as CalendarIcon,
   AttachMoney as MoneyIcon,
+  Cancel as CancelIcon,
+  ShoppingCart as CartIcon,
+  LocalShipping as ShippingIcon,
+  Assignment as AssignmentIcon,
+  LocationOn as LocationIcon,
+  Schedule as ScheduleIcon,
+  Payment as PaymentIcon,
 } from "@mui/icons-material";
 import useFetch from "../hooks/useFetch";
 import { useAuth } from "../context/AuthContext";
 import { useNotification } from "../hooks/useNotification";
 import { URL_BASE } from "../config/config";
+import PropTypes from "prop-types";
 
 const ESTADOS = {
-  1: { nombre: "Activo", color: "#2196F3" },
-  5: { nombre: "Aprobado", color: "#4CAF50" },
-  2: { nombre: "Inactivo", color: "#ffae00" },
-  4: { nombre: "Pendiente", color: "#8d8d8d" },
-  6: { nombre: "Tránsito", color: "#891aff" },
+  1: {
+    nombre: "Activo",
+    color: "primary",
+    bgColor: "rgba(33, 150, 243, 0.1)",
+    icon: <CartIcon color="primary" />,
+  },
+  5: {
+    nombre: "Aprobado",
+    color: "success",
+    bgColor: "rgba(76, 175, 80, 0.1)",
+    icon: <AssignmentIcon color="success" />,
+  },
+  2: {
+    nombre: "Inactivo",
+    color: "warning",
+    bgColor: "rgba(255, 174, 0, 0.1)",
+    icon: <CancelIcon color="warning" />,
+  },
+  4: {
+    nombre: "Pendiente",
+    color: "default",
+    bgColor: "rgba(141, 141, 141, 0.1)",
+    icon: <ScheduleIcon color="action" />,
+  },
+  6: {
+    nombre: "Tránsito",
+    color: "secondary",
+    bgColor: "rgba(137, 26, 255, 0.1)",
+    icon: <ShippingIcon color="secondary" />,
+  },
 };
 
 const OrdenesClient = () => {
   const { request } = useFetch();
   const { userData } = useAuth();
   const { showNotification } = useNotification();
-
   const [ordenes, setOrdenes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedOrden, setSelectedOrden] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+  const [ordenToCancel, setOrdenToCancel] = useState(null);
+
+  const fetchOrdenes = async () => {
+    try {
+      const response = await request(`${URL_BASE}/ordenes/user/${userData.idusuarios}`, "GET");
+      if (response.error) {
+        showNotification({ message: response.error, severity: "error" });
+      } else {
+        setOrdenes(response.data || []);
+      }
+    } catch (error) {
+      console.log(error);
+      showNotification({ message: "Error al obtener órdenes", severity: "error" });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchOrdenes = async () => {
-      try {
-        const response = await request(`${URL_BASE}/ordenes/user/${userData.idusuarios}`, "GET");
-        if (response.error) {
-          showNotification({
-            message: response.error || "Error al obtener las órdenes",
-            severity: "error",
-          });
-        } else {
-          setOrdenes(response.data || []);
-        }
-      } catch (error) {
-        console.log(error);
-        showNotification({
-          message: "Error al realizar la solicitud",
-          severity: "error",
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchOrdenes();
-  }, [request, userData.idusuarios, showNotification]);
+  }, []);
 
   const handleOrdenClick = async (idOrden) => {
     try {
       const response = await request(`${URL_BASE}/ordenes/${idOrden}`, "GET");
       if (response.error) {
-        showNotification({
-          message: response.error || "Error al obtener los detalles de la orden",
-          severity: "error",
-        });
+        showNotification({ message: response.error, severity: "error" });
       } else {
         setSelectedOrden(response.data);
         setModalOpen(true);
       }
     } catch (error) {
       console.log(error);
-      showNotification({
-        message: "Error al realizar la solicitud",
-        severity: "error",
-      });
+      showNotification({ message: "Error al obtener detalles", severity: "error" });
     }
   };
 
-  const renderEstado = (estado) => {
-    const estadoInfo = Object.values(ESTADOS).find((e) => e.nombre === estado) || { color: "#000" };
+  const handleCancelOrder = async () => {
+    try {
+      const response = await request(`${URL_BASE}/ordenes/${ordenToCancel}`, "DELETE");
+      if (response.error) {
+        showNotification({ message: response.error, severity: "error" });
+      } else {
+        showNotification({ message: "Orden cancelada exitosamente", severity: "success" });
+        fetchOrdenes();
+        setModalOpen(false);
+      }
+    } catch (error) {
+      console.log(error);
+      showNotification({ message: "Error al cancelar orden", severity: "error" });
+    } finally {
+      setCancelDialogOpen(false);
+      setOrdenToCancel(null);
+    }
+  };
+
+  const OrderCard = ({ orden }) => {
+    const estadoID = Object.keys(ESTADOS).find((key) => ESTADOS[key].nombre === orden.estado);
+    const estadoInfo = ESTADOS[estadoID] || ESTADOS[4];
+
     return (
-      <Typography
-        variant="body2"
-        style={{
-          color: estadoInfo.color,
-          fontWeight: "bold",
-          textTransform: "uppercase",
-        }}
-      >
-        {estado}
-      </Typography>
+      <Box sx={{ width: "100%", mb: 2 }}>
+        <ListItem
+          sx={{
+            border: "1px solid #e0e0e0",
+            borderRadius: 2,
+            p: 3,
+            transition: "all 0.3s ease",
+            backgroundColor: estadoInfo.bgColor,
+            "&:hover": {
+              boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+              transform: "translateY(-2px)",
+            },
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Box onClick={() => handleOrdenClick(orden.idOrden)} sx={{ cursor: "pointer", flex: 1 }}>
+            <Box display="flex" alignItems="center" gap={2} mb={2}>
+              {estadoInfo.icon}
+              <Typography variant="h6">Orden #{orden.idOrden}</Typography>
+              <Chip label={orden.estado} color={estadoInfo.color} sx={{ fontWeight: "bold" }} />
+            </Box>
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                gap: 2,
+              }}
+            >
+              <InfoRow icon={<PaymentIcon />} text={`Q${orden.total_orden.toFixed(2)}`} />
+              <InfoRow icon={<CalendarIcon />} text={orden.fecha_entrega} />
+              <InfoRow icon={<LocationIcon />} text={orden.direccion || "No especificada"} />
+              <InfoRow icon={<PhoneIcon />} text={orden.telefono || "No especificado"} />
+            </Box>
+          </Box>
+          {orden.estado === "Pendiente" && (
+            <IconButton
+              color="error"
+              onClick={(e) => {
+                e.stopPropagation();
+                setOrdenToCancel(orden.idOrden);
+                setCancelDialogOpen(true);
+              }}
+            >
+              <CancelIcon />
+            </IconButton>
+          )}
+        </ListItem>
+      </Box>
     );
   };
 
+  const InfoRow = ({ icon, text }) => (
+    <Box display="flex" alignItems="center" gap={1}>
+      {icon}
+      <Typography variant="body2">{text}</Typography>
+    </Box>
+  );
+
+  InfoRow.propTypes = {
+    icon: PropTypes.element,
+    text: PropTypes.string,
+  };
+
+  if (!ordenes.length) {
+    return (
+      <Box>
+        <Typography variant="h4">No hay órdenes</Typography>
+      </Box>
+    );
+  }
+
   return (
-    <Box padding={2}>
+    <Box padding={3}>
       {loading ? (
-        <CircularProgress />
-      ) : ordenes.length === 0 ? (
-        <Typography>No hay órdenes disponibles</Typography>
+        <Box display="flex" justifyContent="center">
+          <CircularProgress />
+        </Box>
       ) : (
         <>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" gutterBottom sx={{ fontWeight: "bold", mb: 4 }}>
             Mis Órdenes
           </Typography>
-          <List>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: {
+                xs: "1fr",
+                md: "repeat(2, 1fr)",
+              },
+              gap: 2,
+            }}
+          >
             {ordenes.map((orden) => (
-              <ListItem
-                key={orden.idOrden}
-                style={{
-                  border: "1px solid #ddd",
-                  borderRadius: 8,
-                  marginBottom: 16,
-                  padding: 16,
-                  cursor: "pointer",
-                  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                }}
-                onClick={() => handleOrdenClick(orden.idOrden)}
-              >
-                <ListItemIcon>
-                  <InfoIcon style={{ color: ESTADOS[orden.estado]?.color }} />
-                </ListItemIcon>
-                <Box flex={1}>
-                  <Typography variant="h6" gutterBottom>
-                    Orden #{orden.idOrden}
-                  </Typography>
-                  <Box display="flex" alignItems="center" gap={1}>
-                    <MoneyIcon />
-                    <Typography variant="body2">Total: Q{orden.total_orden.toFixed(2)}</Typography>
-                  </Box>
-                  <Box display="flex" alignItems="center" gap={1}>
-                    <CalendarIcon />
-                    <Typography variant="body2">Fecha Entrega: {orden.fecha_entrega}</Typography>
-                  </Box>
-                  {renderEstado(orden.estado)}
-                </Box>
-              </ListItem>
+              <OrderCard key={orden.idOrden} orden={orden} />
             ))}
-          </List>
+          </Box>
         </>
       )}
 
       <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
         <Paper
-          style={{
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "90%",
             maxWidth: 600,
-            margin: "100px auto",
-            padding: "24px",
-            outline: "none",
+            p: 4,
+            maxHeight: "90vh",
+            overflow: "auto",
           }}
         >
           {selectedOrden && (
             <>
-              <Typography variant="h6" gutterBottom>
-                Detalles de la Orden #{selectedOrden.idOrden}
+              <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                <Typography variant="h5">Orden #{selectedOrden.idOrden}</Typography>
+                {selectedOrden.estado === "Pendiente" && (
+                  <Button
+                    variant="contained"
+                    color="error"
+                    startIcon={<CancelIcon />}
+                    onClick={() => {
+                      setOrdenToCancel(selectedOrden.idOrden);
+                      setCancelDialogOpen(true);
+                    }}
+                  >
+                    Cancelar Pedido
+                  </Button>
+                )}
+              </Box>
+              <Divider sx={{ mb: 3 }} />
+              <Grid container spacing={3}>
+                <InfoRow icon={<PersonIcon />} text={selectedOrden.nombre_completo} />
+                <InfoRow icon={<HomeIcon />} text={selectedOrden.direccion} />
+                <InfoRow icon={<PhoneIcon />} text={selectedOrden.telefono} />
+                <InfoRow icon={<EmailIcon />} text={selectedOrden.correo_electronico} />
+                <InfoRow icon={<MoneyIcon />} text={`Q${selectedOrden.total_orden.toFixed(2)}`} />
+              </Grid>
+              <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>
+                Productos
               </Typography>
-              <Divider style={{ marginBottom: 16 }} />
-              <Box display="flex" alignItems="center" gap={1}>
-                <PersonIcon />
-                <Typography variant="body1">Cliente: {selectedOrden.nombre_completo}</Typography>
+              <Box>
+                {selectedOrden.detalles.map((detalle) => (
+                  <Paper
+                    key={detalle.idOrdenDetalles}
+                    sx={{
+                      p: 2,
+                      mb: 2,
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography>{detalle.nombre_producto}</Typography>
+                    <Typography>
+                      {detalle.cantidad} x Q{detalle.precio.toFixed(2)}
+                    </Typography>
+                  </Paper>
+                ))}
               </Box>
-              <Box display="flex" alignItems="center" gap={1}>
-                <HomeIcon />
-                <Typography variant="body1">Dirección: {selectedOrden.direccion}</Typography>
-              </Box>
-              <Box display="flex" alignItems="center" gap={1}>
-                <PhoneIcon />
-                <Typography variant="body1">Teléfono: {selectedOrden.telefono}</Typography>
-              </Box>
-              <Box display="flex" alignItems="center" gap={1}>
-                <EmailIcon />
-                <Typography variant="body1">Correo: {selectedOrden.correo_electronico}</Typography>
-              </Box>
-              <Box display="flex" alignItems="center" gap={1}>
-                <MoneyIcon />
-                <Typography variant="body1">Total: Q{selectedOrden.total_orden.toFixed(2)}</Typography>
-              </Box>
-              <Divider style={{ margin: "16px 0" }} />
-              <Typography variant="h6">Productos</Typography>
-              {selectedOrden.detalles.map((detalle) => (
-                <Box
-                  key={detalle.idOrdenDetalles}
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  padding={1}
-                  style={{
-                    border: "1px solid #ddd",
-                    borderRadius: 8,
-                    marginBottom: 8,
-                  }}
-                >
-                  <Typography variant="body2">{detalle.nombre_producto}</Typography>
-                  <Typography variant="body2">
-                    {detalle.cantidad} x Q{detalle.precio.toFixed(2)}
-                  </Typography>
-                </Box>
-              ))}
             </>
           )}
         </Paper>
       </Modal>
+
+      <Dialog open={cancelDialogOpen} onClose={() => setCancelDialogOpen(false)}>
+        <DialogTitle>Confirmar Cancelación</DialogTitle>
+        <DialogContent>
+          <Typography>¿Está seguro que desea cancelar esta orden?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setCancelDialogOpen(false)}>No</Button>
+          <Button onClick={handleCancelOrder} color="error" variant="contained">
+            Sí, Cancelar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
+};
+
+OrdenesClient.propTypes = {
+  orden: PropTypes.object,
 };
 
 export default OrdenesClient;
