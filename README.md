@@ -32,7 +32,7 @@
 
 ### User Cart 3
 
-![Vista Previa](https://raw.githubusercontent.com/CristopherPaiz/Desafio360-Frontend/main/public/imagesDemo/UserCart3.png)
+![Vista Previa](https://raw.githubusercontent.com/CristopherPaiz/Desafio360-Frontend/main/public/imagesDemo/userCart3.png)
 
 ## ADMIN INTERFACE
 
@@ -46,7 +46,7 @@
 
 ### Admin Orden Edit
 
-![Vista Previa](https://raw.githubusercontent.com/CristopherPaiz/Desafio360-Frontend/main/public/imagesDemo/AdminOrdenEdit.png)
+![Vista Previa](https://raw.githubusercontent.com/CristopherPaiz/Desafio360-Frontend/main/public/imagesDemo/AdminOrdenEdit.jsx.png)
 
 ### Admin Page
 
