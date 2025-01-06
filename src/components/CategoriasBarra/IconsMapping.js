@@ -1,14 +1,14 @@
-import SchoolIcon from "@mui/icons-material/School";
-import HomeIcon from "@mui/icons-material/Home";
-import DevicesIcon from "@mui/icons-material/Devices";
-import BuildIcon from "@mui/icons-material/Build";
-import KitchenIcon from "@mui/icons-material/Kitchen";
+import { School, Home, Devices, Build, Kitchen, Cake, Liquor, Microwave, Apple, ImageNotSupported } from "@mui/icons-material";
 
 export const categoryIcons = {
-  Electrónicos: DevicesIcon,
-  "Hogar y Cocina": HomeIcon,
-  Papelería: SchoolIcon,
-  Ferretería: BuildIcon,
-  "Línea Blanca": KitchenIcon,
-  Chipox: KitchenIcon,
+  Electrónicos: Devices,
+  "Hogar y Cocina": Home,
+  Papelería: School,
+  Ferretería: Build,
+  "Línea Blanca": Kitchen,
+  "Dulces y Chocolates": Cake,
+  "Enlatados y Conservas": Liquor,
+  "Especias y Sazonadores": Microwave,
+  "Salsas, Aderezos y Vinagre": ImageNotSupported,
+  "Snacks y Fruta Seca": Apple,
 };

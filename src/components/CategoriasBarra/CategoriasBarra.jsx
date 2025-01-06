@@ -6,6 +6,7 @@ import CategoriasSkeleton from "./CategoriasSkeleton";
 import useFetch from "../../hooks/useFetch";
 import { URL_BASE } from "../../config/config";
 import { useNotification } from "../../hooks/useNotification";
+import { ImageNotSupported } from "@mui/icons-material";
 
 const CategoriasBarra = () => {
   const [categorias, setCategorias] = useState([]);
@@ -86,11 +87,10 @@ const CategoriasBarra = () => {
                         }}
                       />
                     ) : (
-                      <Box
+                      <ImageNotSupported
                         sx={{
-                          width: 40,
-                          height: 40,
-                          backgroundColor: "transparent",
+                          fontSize: 40,
+                          color: "gray",
                         }}
                       />
                     )}
