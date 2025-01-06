@@ -72,7 +72,7 @@ const ProductosPorCategoria = () => {
     if (!isInitialLoad && categorias.length > 0) {
       fetchProductosPorCategoria();
     }
-  }, []);
+  }, [categorias.length]);
 
   if (categorias.length === 0) {
     return <Box>No hay productos disponibles</Box>;
